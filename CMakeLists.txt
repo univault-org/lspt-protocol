@@ -9,20 +9,31 @@ find_package(GTest REQUIRED)
 
 # Include directories
 include_directories(${GTEST_INCLUDE_DIRS})
-include_directories(src)
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
-# Add executable for the main LSPT demo
-add_executable(lspt_demo src/main.cpp)
+# Add library for LSPT core
+add_library(lspt_core
+    src/core/lspt_package.cpp
+    src/core/lspt_chunking.cpp
+    src/core/lspt_reassembly.cpp
+)
 
 # Add executable for the tests
-add_executable(test_lspt_demo tests/core/test_lspt_demo.cpp)
+add_executable(test_lspt_demo 
+    tests/core/test_lspt_demo.cpp
+    tests/core/test_lspt_package.cpp
+    tests/core/test_lspt_chunking.cpp
+    tests/core/test_lspt_reassembly.cpp
+)
 
-# Link the test executable against GTest
-target_link_libraries(test_lspt_demo ${GTEST_BOTH_LIBRARIES})
+# Link the test executable against GTest and lspt_core
+target_link_libraries(test_lspt_demo lspt_core ${GTEST_BOTH_LIBRARIES})
 
 # Enable testing
 enable_testing()
 
 # Add the tests
-add_test(NAME LSPTDemoTest COMMAND test_lspt_demo)add_subdirectory(examples)
+add_test(NAME LSPTDemoTest COMMAND test_lspt_demo)
+
+# Add examples subdirectory
 add_subdirectory(examples)

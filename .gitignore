@@ -75,3 +75,6 @@ doc/latex/
 # Temporary files
 tmp/
 temp/
+
+# Ignore TODO list
+TODO.md
