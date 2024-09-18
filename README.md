@@ -135,7 +135,14 @@ All LSPT packets begin with a common header:
 ```
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    Version    |   Packet Type  |            Flags             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           Session ID                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Sequence Number                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
 
 - Version (8 bits): Protocol version
 - Packet Type (8 bits): Identifies the specific packet type
@@ -165,8 +172,6 @@ All LSPT packets begin with a common header:
    - Signals the end of a transfer session
    - Payload includes final status and any cleanup instructions
 
-```
-
 ## 6. Security Considerations
 
 LSPT incorporates several security measures to ensure the integrity and confidentiality of data transfers:
@@ -177,7 +182,7 @@ LSPT incorporates several security measures to ensure the integrity and confiden
 - Protection against replay attacks
 - Measures to mitigate potential denial-of-service attacks
 
-(TOBE UPDATED)
+(TO BE UPDATED)
 
 ## 7. Performance Considerations
 
@@ -227,7 +232,129 @@ Guidelines for contributing to the LSPT protocol specification:
 
 ## 12. License
 
-(TOBE UPDATED)
+(TO BE UPDATED)
 
 ## 13. Acknowledgments
 
+## Use Case: Drone Swarm Coordination
+
+We've chosen drone swarm coordination as our primary use case to demonstrate the capabilities of the LSPT protocol. This scenario effectively showcases the protocol's strengths in secure, efficient, and scalable communication across various ranges and environments.
+
+### Why Drone Swarm Coordination?
+
+1. **Multi-scale Communication**: Demonstrates LSPT's ability to handle short-range (drone-to-drone), medium-range (drone-to-local control), and long-range (Earth-to-space) communication.
+
+2. **Security in Various Environments**: Highlights the protocol's robust security features in both terrestrial and space applications.
+
+3. **Large Data Transfer**: Shows how LSPT efficiently handles the transfer of large data packages, such as swarm coordination commands or collected sensor data.
+
+4. **Real-time Coordination**: Illustrates the protocol's capacity for low-latency communication necessary for real-time swarm operations.
+
+5. **Scalability**: Demonstrates how LSPT can manage communication in a network with numerous nodes (drones).
+
+### Extraterrestrial Operations
+
+#### Mars/Moon Exploration
+
+- **Terrain Mapping**: Drone swarms can quickly map large areas of Martian or lunar terrain, requiring efficient data transfer back to Earth.
+- **Search and Rescue**: In future manned missions, drone swarms could be crucial for locating lost astronauts or equipment.
+- **Resource Detection**: Swarms can conduct wide-area surveys for resources, necessitating secure and efficient data transmission.
+
+#### Space Construction
+
+- **Autonomous Assembly**: Drone swarms could assist in constructing space habitats or stations, requiring precise coordination and data exchange.
+- **Satellite Servicing**: Swarms of small satellites could work together to service larger satellites, demonstrating LSPT's utility in space-to-space communication.
+
+### Earth Operations: Disaster Relief Response
+
+- **Rapid Situation Assessment**: Drone swarms can quickly survey disaster-stricken areas, sending back large volumes of imagery and sensor data.
+- **Search and Rescue**: Coordinated drone swarms can efficiently search for survivors in disaster zones.
+- **Communication Relay**: In areas where infrastructure is damaged, drone swarms can establish temporary communication networks.
+- **Supply Delivery**: Swarms can coordinate to deliver supplies to multiple locations simultaneously, requiring secure and efficient communication.
+
+### Next Steps
+
+1. Implement core LSPT protocol features
+2. Develop drone swarm simulation using LSPT
+3. Create visualizations of data flow in various scenarios
+4. Conduct performance comparisons with existing protocols
+5. Prepare detailed use case demonstrations for NASA and disaster relief organizations
+
+Through this use case, we aim to demonstrate LSPT's potential in revolutionizing communication for complex, distributed systems in both terrestrial and space applications.
+
+## Examining the Drone Swarm Implementation
+
+We encourage you to explore our drone swarm implementation, which serves as a practical example of how the LSPT protocol can be utilized in a complex, distributed system. This implementation can be found in the `examples/drone_swarm` directory of this repository.
+
+### Directory Structure
+
+```
+examples/drone_swarm/
+├── src/
+│   ├── drone.h
+│   ├── drone.cpp
+│   ├── local_control_station.h
+│   ├── local_control_station.cpp
+│   ├── satellite.h
+│   └── satellite.cpp
+├── tests/
+│   ├── test_drone.cpp
+│   ├── test_local_control_station.cpp
+│   └── test_satellite.cpp
+└── CMakeLists.txt
+```
+
+### Key Components
+
+1. **Drone** (`drone.h`, `drone.cpp`):
+   - Implements individual drone behavior
+   - Demonstrates short-range communication using LSPT over ultrasonic channels
+   - Shows how drones collect and transmit data
+
+2. **Local Control Station** (`local_control_station.h`, `local_control_station.cpp`):
+   - Manages a group of drones
+   - Illustrates medium-range communication between drones and the control station
+   - Demonstrates data aggregation and command distribution
+
+3. **Satellite** (`satellite.h`, `satellite.cpp`):
+   - Simulates a satellite relay
+   - Showcases long-range communication using LSPT
+   - Demonstrates how large data packages are handled over significant distances
+
+### How to Explore
+
+1. Start by examining the `Drone` class to understand how individual drones utilize LSPT for communication and data transfer.
+2. Move on to the `LocalControlStation` to see how multiple drones are managed and how data is aggregated.
+3. Finally, look at the `Satellite` class to understand how LSPT handles long-range, high-latency communication.
+
+### Running the Example
+
+To build and run the drone swarm example:
+
+1. Ensure you have CMake and a C++ compiler installed.
+2. Navigate to the project root directory.
+3. Run the following commands:
+
+   ```
+   mkdir build && cd build
+   cmake ..
+   make
+   ./examples/drone_swarm/drone_swarm_demo
+   ```
+
+This will compile and run the drone swarm demonstration, showcasing the LSPT protocol in action.
+
+### Testing
+
+We use Google Test for unit testing. To run the tests for the drone swarm example:
+
+1. Follow the build steps above.
+2. Run the test executable:
+
+   ```
+   ./examples/drone_swarm/tests/drone_swarm_tests
+   ```
+
+We encourage you to examine the test files in `examples/drone_swarm/tests/` to understand how we validate the functionality of each component.
+
+By exploring this implementation, you'll gain insights into how LSPT can be applied to complex, real-world scenarios involving multi-scale communication and large data transfers.
