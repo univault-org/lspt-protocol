@@ -1,6 +1,7 @@
 # tests/core/CMakeLists.txt
 add_executable(test_lspt_core
     test_lspt_packet.cpp
+    test_lspt_connection.cpp
     test_lspt_error_detection.cpp
     test_lspt_retransmission.cpp
     # Add other test files as needed
