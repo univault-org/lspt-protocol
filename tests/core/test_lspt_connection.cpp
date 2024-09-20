@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
 #include "../../src/core/lspt_connection.h"
-#include <chrono>
-#include <thread>
 
-using namespace LSPT;  
+using namespace LSPT;
 
 class LSPTConnectionTest : public ::testing::Test {
 protected:
@@ -243,4 +241,96 @@ TEST_F(LSPTConnectionReliabilityTest, LongLivedConnection) {
     // Restore connection
     EXPECT_TRUE(connection.handleKeepAlive());
     EXPECT_TRUE(connection.isConnectionAlive());
+}
+
+class LSPTFlowControlTest : public ::testing::Test {
+protected:
+    LSPT::LSPTConnection connection;
+
+    void SetUp() override {
+        connection.setState(LSPT::LSPTConnectionState::ESTABLISHED);
+    }
+};
+
+TEST_F(LSPTFlowControlTest, InitialWindowSize) {
+    connection.setReceiveWindowSize(65536);
+    EXPECT_EQ(connection.getReceiveWindowSize(), 65536);
+    EXPECT_EQ(connection.getAvailableWindowSize(), 65536);
+}
+
+TEST_F(LSPTFlowControlTest, UpdateAvailableWindowSize) {
+    connection.setReceiveWindowSize(65536);
+    connection.updateAvailableWindowSize(32768);
+    EXPECT_EQ(connection.getAvailableWindowSize(), 32768);
+}
+
+TEST_F(LSPTFlowControlTest, CanSendData) {
+    connection.setReceiveWindowSize(1000);
+    EXPECT_TRUE(connection.canSendData(500));
+    EXPECT_TRUE(connection.canSendData(1000));
+    EXPECT_FALSE(connection.canSendData(1001));
+}
+
+TEST_F(LSPTFlowControlTest, SendDataReducesWindow) {
+    connection.setReceiveWindowSize(1000);
+    std::vector<uint8_t> data(500, 0);
+    EXPECT_TRUE(connection.sendData(data));
+    EXPECT_EQ(connection.getAvailableWindowSize(), 500);
+}
+
+TEST_F(LSPTFlowControlTest, ReceiveDataUpdatesWindow) {
+    connection.setReceiveWindowSize(1000);
+    std::vector<uint8_t> data(500, 0);
+    connection.receiveData(data);
+    // Assuming all data is processed immediately in the test
+    EXPECT_EQ(connection.getAvailableWindowSize(), 1000);
+}
+
+TEST_F(LSPTFlowControlTest, WindowUpdateAfterProcessing) {
+    connection.setReceiveWindowSize(1000);
+    std::vector<uint8_t> data(500, 0);
+    connection.receiveData(data);
+    // Simulate processing of 250 bytes
+    connection.updateAvailableWindowSize(750);
+    EXPECT_EQ(connection.getAvailableWindowSize(), 750);
+}
+
+TEST_F(LSPTFlowControlTest, PreventSendingWhenWindowFull) {
+    connection.setReceiveWindowSize(1000);
+    std::vector<uint8_t> data(1000, 0);
+    EXPECT_TRUE(connection.sendData(data));
+    EXPECT_FALSE(connection.canSendData(1));
+    std::vector<uint8_t> moreData(1, 0);
+    EXPECT_FALSE(connection.sendData(moreData));
+}
+
+TEST_F(LSPTFlowControlTest, SendDataUpdatesLastActivity) {
+    connection.setReceiveWindowSize(1000); // Ensure there's enough window size
+    auto before = connection.getLastActivityTime();
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::vector<uint8_t> data(100, 0);
+    ASSERT_TRUE(connection.sendData(data));
+    EXPECT_GT(connection.getLastActivityTime(), before);
+}
+
+TEST_F(LSPTFlowControlTest, ReceiveDataUpdatesLastActivity) {
+    auto before = connection.getLastActivityTime();
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::vector<uint8_t> data(100, 0);
+    connection.receiveData(data);
+    EXPECT_GT(connection.getLastActivityTime(), before);
+}
+
+TEST_F(LSPTFlowControlTest, ReceiveDataInNonEstablishedState) {
+    connection.setState(LSPT::LSPTConnectionState::CLOSED);
+    uint32_t initialWindow = connection.getAvailableWindowSize();
+    std::vector<uint8_t> data(100, 0);
+    connection.receiveData(data);
+    EXPECT_EQ(connection.getAvailableWindowSize(), initialWindow);
+}
+
+TEST_F(LSPTFlowControlTest, SendWindowUpdate) {
+    connection.setReceiveWindowSize(1000);
+    connection.sendWindowUpdate(500);
+    EXPECT_EQ(connection.getAvailableWindowSize(), 500);
 }

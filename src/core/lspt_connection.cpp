@@ -176,4 +176,57 @@ bool LSPTConnection::isConnectionAlive() const {
     return elapsed <= (keepAliveInterval_ + std::chrono::milliseconds(100)); // Add 100ms buffer
 }
 
+void LSPTConnection::setReceiveWindowSize(uint32_t size) {
+    receive_window_size_ = size;
+    available_window_size_ = size;
+}
+
+uint32_t LSPTConnection::getReceiveWindowSize() const {
+    return receive_window_size_;
+}
+
+void LSPTConnection::updateAvailableWindowSize(uint32_t size) {
+    available_window_size_ = std::min(size, receive_window_size_);
+}
+
+uint32_t LSPTConnection::getAvailableWindowSize() const {
+    return available_window_size_;
+}
+
+bool LSPTConnection::canSendData(uint32_t dataSize) const {
+    return dataSize <= available_window_size_;
+}
+
+bool LSPTConnection::sendData(const std::vector<uint8_t>& data) {
+    if (!canSendData(data.size())) {
+        return false;
+    }
+    // Existing send logic...
+    available_window_size_ -= data.size();
+    lastActivityTime_ = std::chrono::steady_clock::now(); // Update last activity time
+    return true;
+}
+
+void LSPTConnection::receiveData(const std::vector<uint8_t>& data) {
+    if (state_ != LSPTConnectionState::ESTABLISHED) {
+        return; // Only receive data in ESTABLISHED state
+    }
+    // Existing receive logic...
+    available_window_size_ -= data.size();
+    // Logic to process received data...
+    // After processing:
+    uint32_t processed_size = data.size(); // Assume all data is processed
+    available_window_size_ += processed_size;
+    lastActivityTime_ = std::chrono::steady_clock::now(); // Update last activity time
+    // Notify peer about updated window size
+    sendWindowUpdate(available_window_size_);
+}
+
+void LSPTConnection::sendWindowUpdate(uint32_t newSize) {
+    // In a real implementation, you would create and send a window update packet
+    // For now, we'll just update the local state
+    available_window_size_ = newSize;
+    lastActivityTime_ = std::chrono::steady_clock::now(); // Update last activity time
+}
+
 } // namespace LSPT

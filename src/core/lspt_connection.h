@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <chrono>
+#include <thread>
 
 namespace LSPT {
 
@@ -58,14 +59,31 @@ public:
     bool handleKeepAlive();
     bool isConnectionAlive() const;
 
+    // Flow control methods
+    void setReceiveWindowSize(uint32_t size);
+    uint32_t getReceiveWindowSize() const;
+    void updateAvailableWindowSize(uint32_t size);
+    uint32_t getAvailableWindowSize() const;
+    bool canSendData(uint32_t dataSize) const;
+
+    // Data transfer methods
+    bool sendData(const std::vector<uint8_t>& data);
+    void receiveData(const std::vector<uint8_t>& data);
+    void sendWindowUpdate(uint32_t newSize);
+
     // For testing
     size_t getUnacknowledgedPacketCount() const;
+    std::chrono::steady_clock::time_point getLastActivityTime() const {
+        return lastActivityTime_;
+    }
 
 private:
     LSPTConnectionState state_;
     std::map<uint32_t, std::vector<uint8_t>> unacknowledgedPackets_;
     std::chrono::steady_clock::time_point lastActivityTime_;
     std::chrono::seconds keepAliveInterval_;
+    uint32_t receive_window_size_;
+    uint32_t available_window_size_;
     // Other private members...
 
     void resetConnection();
