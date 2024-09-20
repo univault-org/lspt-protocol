@@ -1,136 +1,140 @@
 #include "lspt_crypto.h"
-#include <openssl/evp.h>
 #include <stdexcept>
+#include <random>
+#include <algorithm>
+#include <sodium.h>
 
 namespace LSPT {
 
 void encryptAESGCM(const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv,
                    const std::vector<uint8_t>& plaintext, const std::vector<uint8_t>& aad,
                    std::vector<uint8_t>& ciphertext, std::vector<uint8_t>& tag) {
-    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-    if (!ctx) throw std::runtime_error("Failed to create EVP_CIPHER_CTX");
-
-    if (EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr) != 1)
-        throw std::runtime_error("Failed to initialize AES-GCM encryption");
-
-    if (EVP_EncryptInit_ex(ctx, nullptr, nullptr, key.data(), iv.data()) != 1)
-        throw std::runtime_error("Failed to set AES-GCM key and IV");
-
-    int len;
-    if (EVP_EncryptUpdate(ctx, nullptr, &len, aad.data(), aad.size()) != 1)
-        throw std::runtime_error("Failed to set AES-GCM AAD");
+    // Implementation using libsodium
+    if (sodium_init() < 0) {
+        throw std::runtime_error("libsodium initialization failed");
+    }
 
     ciphertext.resize(plaintext.size());
-    if (EVP_EncryptUpdate(ctx, ciphertext.data(), &len, plaintext.data(), plaintext.size()) != 1)
-        throw std::runtime_error("Failed to encrypt plaintext");
-    int ciphertext_len = len;
+    tag.resize(crypto_aead_aes256gcm_ABYTES);
 
-    if (EVP_EncryptFinal_ex(ctx, ciphertext.data() + len, &len) != 1)
-        throw std::runtime_error("Failed to finalize AES-GCM encryption");
-    ciphertext_len += len;
-
-    tag.resize(16);
-    if (EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag.data()) != 1)
-        throw std::runtime_error("Failed to get AES-GCM tag");
-
-    EVP_CIPHER_CTX_free(ctx);
+    if (crypto_aead_aes256gcm_encrypt_detached(
+            ciphertext.data(), tag.data(), nullptr,
+            plaintext.data(), plaintext.size(),
+            aad.data(), aad.size(),
+            nullptr, iv.data(), key.data()) != 0) {
+        throw std::runtime_error("AES-GCM encryption failed");
+    }
 }
 
 std::vector<uint8_t> decryptAESGCM(const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv,
                                    const std::vector<uint8_t>& ciphertext, const std::vector<uint8_t>& aad,
                                    const std::vector<uint8_t>& tag) {
-    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-    if (!ctx) throw std::runtime_error("Failed to create EVP_CIPHER_CTX");
-
-    if (EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr) != 1)
-        throw std::runtime_error("Failed to initialize AES-GCM decryption");
-
-    if (EVP_DecryptInit_ex(ctx, nullptr, nullptr, key.data(), iv.data()) != 1)
-        throw std::runtime_error("Failed to set AES-GCM key and IV");
-
-    int len;
-    if (EVP_DecryptUpdate(ctx, nullptr, &len, aad.data(), aad.size()) != 1)
-        throw std::runtime_error("Failed to set AES-GCM AAD");
+    // Implementation using libsodium
+    if (sodium_init() < 0) {
+        throw std::runtime_error("libsodium initialization failed");
+    }
 
     std::vector<uint8_t> plaintext(ciphertext.size());
-    if (EVP_DecryptUpdate(ctx, plaintext.data(), &len, ciphertext.data(), ciphertext.size()) != 1)
-        throw std::runtime_error("Failed to decrypt ciphertext");
-    int plaintext_len = len;
 
-    if (EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, 16, const_cast<uint8_t*>(tag.data())) != 1)
-        throw std::runtime_error("Failed to set AES-GCM tag");
+    if (crypto_aead_aes256gcm_decrypt_detached(
+            plaintext.data(),
+            nullptr,
+            ciphertext.data(), ciphertext.size(),
+            tag.data(),
+            aad.data(), aad.size(),
+            iv.data(), key.data()) != 0) {
+        throw std::runtime_error("AES-GCM decryption failed");
+    }
 
-    if (EVP_DecryptFinal_ex(ctx, plaintext.data() + len, &len) != 1)
-        throw std::runtime_error("Failed to finalize AES-GCM decryption");
-    plaintext_len += len;
-
-    plaintext.resize(plaintext_len);
-    EVP_CIPHER_CTX_free(ctx);
     return plaintext;
+}
+
+KeyPair generateKeyPair() {
+    std::vector<uint8_t> privateKey(crypto_box_SECRETKEYBYTES);
+    std::vector<uint8_t> publicKey(crypto_box_PUBLICKEYBYTES);
+
+    if (sodium_init() < 0) {
+        throw std::runtime_error("libsodium initialization failed");
+    }
+
+    crypto_box_keypair(publicKey.data(), privateKey.data());
+
+    return {std::move(privateKey), std::move(publicKey)};
+}
+
+std::vector<uint8_t> getPublicKey(const KeyPair& keyPair) {
+    return keyPair.publicKey;
+}
+
+std::vector<uint8_t> computeSharedSecret(const KeyPair& localKeyPair, const std::vector<uint8_t>& peerPublicKey) {
+    if (peerPublicKey.size() != crypto_box_PUBLICKEYBYTES) {
+        throw std::invalid_argument("Invalid peer public key size");
+    }
+
+    std::vector<uint8_t> sharedSecret(crypto_box_BEFORENMBYTES);
+
+    if (crypto_box_beforenm(sharedSecret.data(), peerPublicKey.data(), localKeyPair.privateKey.data()) != 0) {
+        throw std::runtime_error("Shared secret computation failed");
+    }
+
+    return sharedSecret;
 }
 
 void encryptChaCha20Poly1305(const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv,
                              const std::vector<uint8_t>& plaintext, const std::vector<uint8_t>& aad,
                              std::vector<uint8_t>& ciphertext, std::vector<uint8_t>& tag) {
-    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-    if (!ctx) throw std::runtime_error("Failed to create EVP_CIPHER_CTX");
+    if (key.size() != crypto_aead_chacha20poly1305_KEYBYTES) {
+        throw std::invalid_argument("Invalid key size");
+    }
+    if (iv.size() != crypto_aead_chacha20poly1305_NPUBBYTES) {
+        throw std::invalid_argument("Invalid IV size");
+    }
 
-    if (EVP_EncryptInit_ex(ctx, EVP_chacha20_poly1305(), nullptr, nullptr, nullptr) != 1)
-        throw std::runtime_error("Failed to initialize ChaCha20-Poly1305 encryption");
+    ciphertext.resize(plaintext.size() + crypto_aead_chacha20poly1305_ABYTES);
+    tag.resize(crypto_aead_chacha20poly1305_ABYTES);
 
-    if (EVP_EncryptInit_ex(ctx, nullptr, nullptr, key.data(), iv.data()) != 1)
-        throw std::runtime_error("Failed to set ChaCha20-Poly1305 key and IV");
+    unsigned long long ciphertext_len;
 
-    int len;
-    if (EVP_EncryptUpdate(ctx, nullptr, &len, aad.data(), aad.size()) != 1)
-        throw std::runtime_error("Failed to set ChaCha20-Poly1305 AAD");
+    if (crypto_aead_chacha20poly1305_encrypt_detached(
+            ciphertext.data(), tag.data(), &ciphertext_len,
+            plaintext.data(), plaintext.size(),
+            aad.data(), aad.size(),
+            nullptr, iv.data(), key.data()) != 0) {
+        throw std::runtime_error("Encryption failed");
+    }
 
-    ciphertext.resize(plaintext.size());
-    if (EVP_EncryptUpdate(ctx, ciphertext.data(), &len, plaintext.data(), plaintext.size()) != 1)
-        throw std::runtime_error("Failed to encrypt plaintext");
-    int ciphertext_len = len;
-
-    if (EVP_EncryptFinal_ex(ctx, ciphertext.data() + len, &len) != 1)
-        throw std::runtime_error("Failed to finalize ChaCha20-Poly1305 encryption");
-    ciphertext_len += len;
-
-    tag.resize(16);
-    if (EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_AEAD_GET_TAG, 16, tag.data()) != 1)
-        throw std::runtime_error("Failed to get ChaCha20-Poly1305 tag");
-
-    EVP_CIPHER_CTX_free(ctx);
+    ciphertext.resize(ciphertext_len);
 }
 
 std::vector<uint8_t> decryptChaCha20Poly1305(const std::vector<uint8_t>& key, const std::vector<uint8_t>& iv,
                                              const std::vector<uint8_t>& ciphertext, const std::vector<uint8_t>& aad,
                                              const std::vector<uint8_t>& tag) {
-    EVP_CIPHER_CTX* ctx = EVP_CIPHER_CTX_new();
-    if (!ctx) throw std::runtime_error("Failed to create EVP_CIPHER_CTX");
-
-    if (EVP_DecryptInit_ex(ctx, EVP_chacha20_poly1305(), nullptr, nullptr, nullptr) != 1)
-        throw std::runtime_error("Failed to initialize ChaCha20-Poly1305 decryption");
-
-    if (EVP_DecryptInit_ex(ctx, nullptr, nullptr, key.data(), iv.data()) != 1)
-        throw std::runtime_error("Failed to set ChaCha20-Poly1305 key and IV");
-
-    int len;
-    if (EVP_DecryptUpdate(ctx, nullptr, &len, aad.data(), aad.size()) != 1)
-        throw std::runtime_error("Failed to set ChaCha20-Poly1305 AAD");
+    if (key.size() != crypto_aead_chacha20poly1305_KEYBYTES) {
+        throw std::invalid_argument("Invalid key size");
+    }
+    if (iv.size() != crypto_aead_chacha20poly1305_NPUBBYTES) {
+        throw std::invalid_argument("Invalid IV size");
+    }
+    if (tag.size() != crypto_aead_chacha20poly1305_ABYTES) {
+        throw std::invalid_argument("Invalid tag size");
+    }
 
     std::vector<uint8_t> plaintext(ciphertext.size());
-    if (EVP_DecryptUpdate(ctx, plaintext.data(), &len, ciphertext.data(), ciphertext.size()) != 1)
-        throw std::runtime_error("Failed to decrypt ciphertext");
-    int plaintext_len = len;
+    unsigned long long plaintext_len;
 
-    if (EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_AEAD_SET_TAG, 16, const_cast<uint8_t*>(tag.data())) != 1)
-        throw std::runtime_error("Failed to set ChaCha20-Poly1305 tag");
+    if (crypto_aead_chacha20poly1305_decrypt_detached(
+            plaintext.data(),
+            nullptr,
+            ciphertext.data(), ciphertext.size(),
+            tag.data(),
+            aad.data(), aad.size(),
+            iv.data(), key.data()) != 0) {
+        throw std::runtime_error("Decryption failed");
+    }
 
-    if (EVP_DecryptFinal_ex(ctx, plaintext.data() + len, &len) != 1)
-        throw std::runtime_error("Failed to finalize ChaCha20-Poly1305 decryption");
-    plaintext_len += len;
-
+    // The plaintext size is the same as the ciphertext size in this case
+    plaintext_len = ciphertext.size();
     plaintext.resize(plaintext_len);
-    EVP_CIPHER_CTX_free(ctx);
     return plaintext;
 }
 

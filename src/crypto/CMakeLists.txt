@@ -4,4 +4,4 @@ add_library(lspt_crypto
 )
 
 target_include_directories(lspt_crypto PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(lspt_crypto PUBLIC OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(lspt_crypto PUBLIC ${LIBSODIUM_LIBRARY})
