@@ -1,6 +1,7 @@
 #include "ground_handshake.h"
 #include <cstdio>
 #include <cassert>
+#include <stdexcept>
 #include <sodium.h> // Make sure this is included for crypto_box_PUBLICKEYBYTES
 
 namespace LSPT::Ground {

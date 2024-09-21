@@ -1,6 +1,7 @@
 #include "routing.h"
 #include <queue>
 #include <unordered_set>
+#include <stdexcept>
 #include <algorithm>
 
 namespace lspt {

@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <stdexcept>
 #include "../../src/core/lspt_packet.h"
 
 TEST(LSPTPacketTest, CreatePacket) {

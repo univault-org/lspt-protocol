@@ -1,5 +1,5 @@
 #pragma once
-
+#include <stdexcept>
 #include "../../src/core/lspt_handshake.h"  // Include the base Handshake class
 
 namespace LSPT {

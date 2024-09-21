@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <stdexcept>
 #include "../../src/core/lspt_handshake.h"
 #include "mocks/mock_handshake.h"  // Include the mock class
 
