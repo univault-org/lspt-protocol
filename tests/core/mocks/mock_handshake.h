@@ -43,8 +43,9 @@ public:
         if (state != LSPT::HandshakeState::Established) {
             throw std::runtime_error("Shared secret not available: Handshake not completed");
         }
-        // In a real implementation, this would return the actual shared secret
-        return LSPT::Common::ByteVector{4, 5, 6};
+        // Use a static member to store the mock shared secret
+        static const LSPT::Common::ByteVector mockSharedSecret{4, 5, 6};
+        return mockSharedSecret;
     }
 
     LSPT::HandshakeState getState() const override {

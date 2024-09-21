@@ -1,5 +1,10 @@
 # LSPT: Large Single Package Transfer Protocol
 
+![CI](https://github.com/univault-org/lspt-protocol/workflows/CI/badge.svg)
+
+[![CI](https://github.com/univault-org/lspt-protocol/workflows/CI/badge.svg)](https://github.com/univault-org/lspt-protocol/actions)
+*CI Status: Passing*
+
 ## 1. Abstract
 
 The Large Single Package Transfer (LSPT) protocol is a novel satellite-based communication protocol designed to efficiently transfer large data packages globally. LSPT addresses the growing need for rapid, reliable, and secure transfer of large datasets, particularly in the context of AI model updates and big data applications. By leveraging satellite technology, LSPT offers global coverage, high bandwidth, and reduced network congestion compared to traditional terrestrial networks. This document specifies the LSPT protocol, detailing its architecture, packet structure, security measures, and implementation guidelines.
