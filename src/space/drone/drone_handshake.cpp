@@ -2,6 +2,7 @@
 #include <cassert>
 #include <sodium.h> // Make sure this is included for crypto_box_PUBLICKEYBYTES
 #include <cstdio> // For printf
+#include <stdexcept>
 
 namespace LSPT::Space::Drone {
 
