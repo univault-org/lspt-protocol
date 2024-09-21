@@ -1,6 +1,8 @@
 #include "cubic.h"
 #include <algorithm>
 #include <cmath>
+#include <chrono>
+#include <cstdint>
 #include <iostream>
 
 namespace LSPT {
@@ -113,7 +115,7 @@ void Cubic::updatePacingRate() {
     uint64_t target_rate = static_cast<uint64_t>(cwnd_) * 1000000 / rtt.count();
     uint64_t pacing_rate = target_rate / 2; // Pace at half the target rate for more visible pacing
     
-    pacing_rate_ = std::chrono::microseconds(1000000 / std::max(pacing_rate, 1ULL));
+    pacing_rate_ = std::chrono::microseconds(1000000 / std::max(pacing_rate, static_cast<uint64_t>(1)));
 }
 
 void Cubic::handleIdlePeriod() {
