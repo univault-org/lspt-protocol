@@ -1,61 +1,43 @@
 #include "lspt_handshake.h"
+#include "../common/types.h"  // Adjust the path as necessary
 #include "../crypto/lspt_crypto.h"
 #include <stdexcept>
-#include <iostream> // For debug logs
+#include <cstdio> // For printf
 
 namespace LSPT {
 
 Handshake::Handshake() : state(HandshakeState::Initial) {
-    std::cout << "Handshake initialized" << std::endl;
+    printf("Core Handshake initialized\n");
+    localKeyPair = generateKeyPair();
 }
 
-std::vector<uint8_t> Handshake::initiateHandshake(bool isGroundStation) {
-    std::cout << "Initiating handshake. Is Ground Station: " << (isGroundStation ? "Yes" : "No") << std::endl;
+Common::ByteVector Handshake::initiateHandshake() {
     if (state != HandshakeState::Initial) {
-        throw std::runtime_error("Handshake already initiated");
+        state = HandshakeState::Initial;
+        sharedSecret.clear();
+        peerPublicKey.clear();
     }
     
-    localKeyPair = generateKeyPair();
-
-    std::vector<uint8_t> message;
-    message.push_back(isGroundStation ? 0x01 : 0x00);
-    auto publicKey = getPublicKey(localKeyPair);
-    message.insert(message.end(), publicKey.begin(), publicKey.end());
-    
-    state = isGroundStation ? HandshakeState::GroundStationHello : HandshakeState::DroneHello;
-    return message;
+    auto publicKey = generatePublicKey();
+    state = HandshakeState::HelloSent;
+    return publicKey;
 }
 
-std::vector<uint8_t> Handshake::handleHandshakeMessage(const std::vector<uint8_t>& message) {
-    if (state == HandshakeState::Initial || state == HandshakeState::DroneHello || state == HandshakeState::GroundStationHello) {
-        bool isFromGroundStation = message[0] == 0x01;
-        std::cout << "Received handshake message from: " << (isFromGroundStation ? "Ground Station" : "Drone") << std::endl;
-        
-        std::vector<uint8_t> peerPublicKey(message.begin() + 1, message.end());
-        if (state == HandshakeState::Initial) {
-            localKeyPair = generateKeyPair();
-        }
+Common::ByteVector Handshake::generatePublicKey() {
+    auto publicKey = getPublicKey(localKeyPair);
+    return publicKey;
+}
+
+void Handshake::computeSharedSecretInternal() {
+    if (!peerPublicKey.empty()) {
 
         sharedSecret = computeSharedSecret(localKeyPair, peerPublicKey);
-
-        std::vector<uint8_t> response;
-        if (state == HandshakeState::Initial) {
-            response.push_back(isFromGroundStation ? 0x00 : 0x01);
-            auto publicKey = getPublicKey(localKeyPair);
-            response.insert(response.end(), publicKey.begin(), publicKey.end());
-        }
-
-        state = HandshakeState::Established;
-
-        return response;  // This will be empty if it's not the initial response
-    } else if (state == HandshakeState::Established) {
-        throw std::runtime_error("Unexpected handshake message");
     } else {
-        throw std::runtime_error("Invalid handshake state");
+        printf("Cannot compute shared secret: peer public key is empty\n");
     }
 }
 
-const std::vector<uint8_t>& Handshake::getSharedSecret() const {
+const Common::ByteVector& Handshake::getSharedSecret() const {
     if (state != HandshakeState::Established) {
         throw std::runtime_error("Handshake not completed");
     }

@@ -1,32 +1,40 @@
 #pragma once
 
-#include <vector>
-#include <cstdint>
+#include "../common/types.h"
 #include "../crypto/lspt_crypto.h"
+#include <cstdio> // For printf
 
 namespace LSPT {
 
 enum class HandshakeState {
     Initial,
-    DroneHello,
-    GroundStationHello,
-    DroneKeyExchange,
-    GroundStationKeyExchange,
+    HelloSent,
+    InProgress,
+    AwaitingResponse,
     Established
 };
 
 class Handshake {
+protected:
+    Common::ByteVector peerPublicKey;
+    HandshakeState state;
+    Common::ByteVector sharedSecret;
+    KeyPair localKeyPair;
+
 public:
     Handshake();
-    std::vector<uint8_t> initiateHandshake(bool isGroundStation);
-    std::vector<uint8_t> handleHandshakeMessage(const std::vector<uint8_t>& message);
-    const std::vector<uint8_t>& getSharedSecret() const;
-    HandshakeState getState() const;
+    virtual ~Handshake() = default;
 
-private:
-    HandshakeState state;
-    KeyPair localKeyPair;
-    std::vector<uint8_t> sharedSecret;
+    virtual Common::ByteVector initiateHandshake();
+    virtual Common::ByteVector handleHandshakeMessage(const Common::ByteVector& message) = 0;
+    virtual const Common::ByteVector& getSharedSecret() const;
+    virtual HandshakeState getState() const;
+
+    const Common::ByteVector& getPeerPublicKey() const { return peerPublicKey; }
+
+protected:
+    Common::ByteVector generatePublicKey();
+    void computeSharedSecretInternal();
 };
 
 } // namespace LSPT
