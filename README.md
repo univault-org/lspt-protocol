@@ -1,9 +1,8 @@
 # LSPT: Large Single Package Transfer Protocol
 
-![CI](https://github.com/univault-org/lspt-protocol/workflows/CI/badge.svg)
 
 [![CI](https://github.com/univault-org/lspt-protocol/workflows/CI/badge.svg)](https://github.com/univault-org/lspt-protocol/actions)
-*CI Status: Passing*
+
 
 ## 1. Abstract
 
