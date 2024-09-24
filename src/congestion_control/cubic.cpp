@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <iostream>
 
-namespace LSPT {
+namespace SRPT {
 namespace CongestionControl {
 
 Cubic::Cubic()
@@ -143,4 +143,4 @@ void Cubic::fastConvergence() {
 }
 
 } // namespace CongestionControl
-} // namespace LSPT
+} // namespace SRPT

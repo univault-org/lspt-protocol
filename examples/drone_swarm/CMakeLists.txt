@@ -5,7 +5,7 @@ add_executable(drone_swarm_demo
     src/satellite.cpp
 )
 
-target_link_libraries(drone_swarm_demo lspt_core)
+target_link_libraries(drone_swarm_demo srpt_core)
 
 # Tests for the drone swarm example
 add_subdirectory(tests)

@@ -4,7 +4,7 @@
 #include <chrono>
 #include <stdexcept>
 
-using namespace LSPT::CongestionControl;
+using namespace SRPT::CongestionControl;
 
 class CubicTest : public ::testing::Test, public Cubic {
 protected:

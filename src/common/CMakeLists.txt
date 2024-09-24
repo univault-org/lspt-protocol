@@ -22,10 +22,10 @@ set(GROUND_HANDSHAKE_SOURCES
 )
 
 # Create the common library as a regular library
-add_library(lspt_common ${COMMON_HEADERS} ${COMMON_SOURCES} ${DRONE_HANDSHAKE_SOURCES} ${GROUND_HANDSHAKE_SOURCES})
+add_library(srpt_common ${COMMON_HEADERS} ${COMMON_SOURCES} ${DRONE_HANDSHAKE_SOURCES} ${GROUND_HANDSHAKE_SOURCES})
 
 # Specify include directories for the common library
-target_include_directories(lspt_common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(srpt_common PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Link any necessary libraries if required (e.g., if you have dependencies)
-# target_link_libraries(lspt_common ...)
+# target_link_libraries(srpt_common ...)

@@ -1,7 +1,7 @@
 #include "node.h"
 #include <algorithm>
 
-namespace lspt {
+namespace srpt {
 namespace network {
 
 Node::Node() : id_(-1) {}
@@ -41,4 +41,4 @@ std::vector<Node*> Node::getConnectedNodes() const {
 }
 
 } // namespace network
-} // namespace lspt
+} // namespace srpt

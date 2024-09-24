@@ -2,8 +2,8 @@
 #include "network/hub/hub.h"
 #include "network/local/routing.h"
 
-using namespace lspt::network;
-using namespace lspt::network::local;
+using namespace srpt::network;
+using namespace srpt::network::local;
 
 TEST(HubTest, CreateHub) {
     Hub hub;

@@ -4,7 +4,7 @@
 #include <cstdio> // For printf
 #include <stdexcept>
 
-namespace LSPT::Space::Drone {
+namespace SRPT::Space::Drone {
 
 // Add this helper function at the beginning of the file, after the includes
 void printFirstBytes(const char* label, const Common::ByteVector& data, size_t numBytes = 4) {
@@ -17,12 +17,12 @@ void printFirstBytes(const char* label, const Common::ByteVector& data, size_t n
 
 DroneHandshake::DroneHandshake() {
     // Initialize localKeyPair here
-    localKeyPair = LSPT::generateKeyPair(); // Assuming you have a function like this in lspt_crypto.h
+    localKeyPair = SRPT::generateKeyPair(); // Assuming you have a function like this in srpt_crypto.h
 }
 
 Common::ByteVector DroneHandshake::initiateHandshake() {
     auto message = Handshake::initiateHandshake();
-    message.insert(message.begin(), LSPT::Common::SPACE_IDENTIFIER);
+    message.insert(message.begin(), SRPT::Common::SPACE_IDENTIFIER);
     
     return message;
 }
@@ -82,7 +82,7 @@ HandshakeState DroneHandshake::getState() const {
 
 Common::ByteVector DroneHandshake::addDroneIdentifier(const Common::ByteVector& message) const {
     Common::ByteVector result = message;
-    result.insert(result.begin(), LSPT::Common::SPACE_IDENTIFIER);
+    result.insert(result.begin(), SRPT::Common::SPACE_IDENTIFIER);
     return result;
 }
 
@@ -91,10 +91,10 @@ Common::ByteVector DroneHandshake::removeIdentifier(const Common::ByteVector& me
         return message;
     }
     
-    if (message[0] == LSPT::Common::GROUND_IDENTIFIER && message[1] == LSPT::Common::SPACE_IDENTIFIER) {
+    if (message[0] == SRPT::Common::GROUND_IDENTIFIER && message[1] == SRPT::Common::SPACE_IDENTIFIER) {
         auto result = Common::ByteVector(message.begin() + 2, message.end());
         return result;
-    } else if (message[0] == LSPT::Common::GROUND_IDENTIFIER) {
+    } else if (message[0] == SRPT::Common::GROUND_IDENTIFIER) {
         auto result = Common::ByteVector(message.begin() + 1, message.end());
         return result;
     }
@@ -110,4 +110,4 @@ Common::ByteVector DroneHandshake::extractPeerPublicKey(const Common::ByteVector
     return message;
 }
 
-} // namespace LSPT::Space::Drone
+} // namespace SRPT::Space::Drone

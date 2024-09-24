@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <chrono>
 
-namespace LSPT {
+namespace SRPT {
 namespace CongestionControl {
 
 class ICongestionControl {
@@ -18,4 +18,4 @@ public:
 };
 
 } // namespace CongestionControl
-} // namespace LSPT
+} // namespace SRPT

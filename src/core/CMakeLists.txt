@@ -1,23 +1,23 @@
-# Core library for the LSPT protocol
+# Core library for the SRPT protocol
 
 # Set the source files for the core library
 set(CORE_SOURCES
-    lspt_package.cpp
-    lspt_connection.cpp
-    lspt_chunking.cpp
-    lspt_reassembly.cpp
-    lspt_packet.cpp
-    lspt_error_detection.cpp
-    lspt_retransmission.cpp
-    lspt_handshake.cpp
+    srpt_package.cpp
+    srpt_connection.cpp
+    srpt_chunking.cpp
+    srpt_reassembly.cpp
+    srpt_packet.cpp
+    srpt_error_detection.cpp
+    srpt_retransmission.cpp
+    srpt_handshake.cpp
 )
 
 # Create the core library
-add_library(lspt_core ${CORE_SOURCES})
+add_library(srpt_core ${CORE_SOURCES})
 
 # Specify include directories for the core library
-target_include_directories(lspt_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(srpt_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Link with common library
-target_link_libraries(lspt_core PUBLIC lspt_common)
-target_link_libraries(lspt_core PUBLIC lspt_crypto)
+target_link_libraries(srpt_core PUBLIC srpt_common)
+target_link_libraries(srpt_core PUBLIC srpt_crypto)

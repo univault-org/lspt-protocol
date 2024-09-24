@@ -1,15 +1,15 @@
 #include <gtest/gtest.h>
-#include "lspt_satellite.h"
+#include "srpt_satellite.h"
 
 class SatelliteAPITest : public ::testing::Test {
 protected:
-    void SetUp(LSPT::Satellite::Provider provider) {
+    void SetUp(SRPT::Satellite::Provider provider) {
         config.setProvider(provider);
-        std::cout << "SetUp: Provider set to " << (config.getProvider() == LSPT::Satellite::Provider::STARLINK ? "STARLINK" : "IRIDIUM") << std::endl;
+        std::cout << "SetUp: Provider set to " << (config.getProvider() == SRPT::Satellite::Provider::STARLINK ? "STARLINK" : "IRIDIUM") << std::endl;
         
         ASSERT_EQ(config.getProvider(), provider);
         
-        session = std::make_unique<LSPT::Satellite::SatelliteSession>(config);
+        session = std::make_unique<SRPT::Satellite::SatelliteSession>(config);
     }
 
     void TearDown() override {
@@ -27,7 +27,7 @@ protected:
         std::cout << "DataTransferTest: Stream created: " << (stream != nullptr ? "Success" : "Failure") << std::endl;
         ASSERT_NE(stream, nullptr);
 
-        LSPT::ByteVector testData = {1, 2, 3, 4, 5};
+        SRPT::ByteVector testData = {1, 2, 3, 4, 5};
         std::cout << "DataTransferTest: Writing data: ";
         for (auto byte : testData) std::cout << static_cast<int>(byte) << " ";
         std::cout << std::endl;
@@ -36,7 +36,7 @@ protected:
         std::cout << "DataTransferTest: Write result: " << (writeResult ? "Success" : "Failure") << std::endl;
         EXPECT_TRUE(writeResult);
 
-        LSPT::ByteVector receivedData;
+        SRPT::ByteVector receivedData;
         std::cout << "DataTransferTest: Reading data" << std::endl;
         bool readResult = stream->Read(receivedData);
         std::cout << "DataTransferTest: Read result: " << (readResult ? "Success" : "Failure") << std::endl;
@@ -79,68 +79,68 @@ protected:
         EXPECT_TRUE(disconnected);
     }
 
-    LSPT::Satellite::SatelliteConfig config;
-    std::unique_ptr<LSPT::Satellite::SatelliteSession> session;
+    SRPT::Satellite::SatelliteConfig config;
+    std::unique_ptr<SRPT::Satellite::SatelliteSession> session;
 };
 
 // Starlink tests
 TEST_F(SatelliteAPITest, StarlinkConfigurationTest) {
-    SetUp(LSPT::Satellite::Provider::STARLINK);
+    SetUp(SRPT::Satellite::Provider::STARLINK);
     config.setProviderSpecificOption("beam_id", "B123");
-    EXPECT_NO_THROW(LSPT::Satellite::SatelliteSession testSession(config));
+    EXPECT_NO_THROW(SRPT::Satellite::SatelliteSession testSession(config));
 }
 
 TEST_F(SatelliteAPITest, StarlinkConnectionTest) {
-    SetUp(LSPT::Satellite::Provider::STARLINK);
+    SetUp(SRPT::Satellite::Provider::STARLINK);
     EXPECT_TRUE(session->Connect("SAT001"));
     EXPECT_TRUE(session->Disconnect());
 }
 
 TEST_F(SatelliteAPITest, StarlinkDataTransferTest) {
-    SetUp(LSPT::Satellite::Provider::STARLINK);
+    SetUp(SRPT::Satellite::Provider::STARLINK);
     RunDataTransferTest();
 }
 
 // TEST_F(SatelliteAPITest, StarlinkProviderCommandTest) {
-//     SetUp(LSPT::Satellite::Provider::STARLINK);
+//     SetUp(SRPT::Satellite::Provider::STARLINK);
 //     RunProviderCommandTest();
 // }
 
 TEST_F(SatelliteAPITest, StarlinkConfigTest) {
-    SetUp(LSPT::Satellite::Provider::STARLINK);
-    LSPT::Satellite::SatelliteConfig testConfig;
-    testConfig.setProvider(LSPT::Satellite::Provider::STARLINK);
-    EXPECT_EQ(testConfig.getProvider(), LSPT::Satellite::Provider::STARLINK);
+    SetUp(SRPT::Satellite::Provider::STARLINK);
+    SRPT::Satellite::SatelliteConfig testConfig;
+    testConfig.setProvider(SRPT::Satellite::Provider::STARLINK);
+    EXPECT_EQ(testConfig.getProvider(), SRPT::Satellite::Provider::STARLINK);
 }
 
 // Iridium tests
 TEST_F(SatelliteAPITest, IridiumConfigurationTest) {
-    SetUp(LSPT::Satellite::Provider::IRIDIUM);
+    SetUp(SRPT::Satellite::Provider::IRIDIUM);
     config.setProviderSpecificOption("beam_id", "B123");
-    EXPECT_NO_THROW(LSPT::Satellite::SatelliteSession testSession(config));
+    EXPECT_NO_THROW(SRPT::Satellite::SatelliteSession testSession(config));
 }
 
 TEST_F(SatelliteAPITest, IridiumConnectionTest) {
-    SetUp(LSPT::Satellite::Provider::IRIDIUM);
+    SetUp(SRPT::Satellite::Provider::IRIDIUM);
     EXPECT_TRUE(session->Connect("SAT001"));
     EXPECT_TRUE(session->Disconnect());
 }
 
 TEST_F(SatelliteAPITest, IridiumDataTransferTest) {
-    SetUp(LSPT::Satellite::Provider::IRIDIUM);
+    SetUp(SRPT::Satellite::Provider::IRIDIUM);
     RunDataTransferTest();
 }
 
 // TEST_F(SatelliteAPITest, IridiumProviderCommandTest) {
-//     SetUp(LSPT::Satellite::Provider::IRIDIUM);
+//     SetUp(SRPT::Satellite::Provider::IRIDIUM);
 //     RunProviderCommandTest();
 // }
 
 TEST_F(SatelliteAPITest, IridiumConfigTest) {
-    SetUp(LSPT::Satellite::Provider::IRIDIUM);
-    LSPT::Satellite::SatelliteConfig testConfig;
-    testConfig.setProvider(LSPT::Satellite::Provider::IRIDIUM);
-    EXPECT_EQ(testConfig.getProvider(), LSPT::Satellite::Provider::IRIDIUM);
+    SetUp(SRPT::Satellite::Provider::IRIDIUM);
+    SRPT::Satellite::SatelliteConfig testConfig;
+    testConfig.setProvider(SRPT::Satellite::Provider::IRIDIUM);
+    EXPECT_EQ(testConfig.getProvider(), SRPT::Satellite::Provider::IRIDIUM);
 }
 
 int main(int argc, char **argv) {

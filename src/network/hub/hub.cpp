@@ -1,7 +1,7 @@
 #include "hub.h"
 #include <algorithm>
 
-namespace lspt {
+namespace srpt {
 namespace network {
 
 void Hub::connectNode(const Node& node) {
@@ -20,4 +20,4 @@ bool Hub::forwardData(const Node& source, const Node& destination, const std::st
 }
 
 } // namespace network
-} // namespace lspt
+} // namespace srpt

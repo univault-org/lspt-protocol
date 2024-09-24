@@ -1,6 +1,6 @@
-# LSPT Protocol Usage Example: Drone-Satellite-Ground Station Communication
+# SRPT Protocol Usage Example: Drone-Satellite-Ground Station Communication
 
-This example demonstrates how to use the LSPT (Large Single Package Transfer) protocol in a real-world scenario involving a drone, a satellite relay, and a ground station.
+This example demonstrates how to use the SRPT (Satellite Relay Package Transfer) protocol in a real-world scenario involving a drone, a satellite relay, and a ground station.
 
 ## Setup
 
@@ -10,7 +10,7 @@ This example demonstrates how to use the LSPT (Large Single Package Transfer) pr
 
 ## Prerequisites
 
-- LSPT protocol library installed
+- SRPT protocol library installed
 - CMake (version 3.12 or higher)
 - Xcode (for iOS development)
 - Boost library (for networking in C++ applications)

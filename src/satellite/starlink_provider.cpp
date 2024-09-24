@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <deque>
 
-namespace LSPT {
+namespace SRPT {
 namespace Satellite {
 
 bool StarlinkProvider::Initialize(const std::map<std::string, std::string>& options) {
@@ -90,4 +90,4 @@ void StarlinkProvider::StarlinkStream::Close() {
 }
 
 } // namespace Satellite
-} // namespace LSPT
+} // namespace SRPT

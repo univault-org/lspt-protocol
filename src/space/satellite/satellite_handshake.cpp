@@ -1,7 +1,7 @@
 #include "satellite_handshake.h"
 #include <iostream>
 
-namespace LSPT::Space::Satellite {
+namespace SRPT::Space::Satellite {
 
 SatelliteHandshake::SatelliteHandshake() {
     // Initialization specific to SatelliteHandshake if needed
@@ -37,4 +37,4 @@ Common::ByteVector SatelliteHandshake::removeIdentifier(const Common::ByteVector
     return message;  // Modify this as needed
 }
 
-} // namespace LSPT::Space::Satellite
+} // namespace SRPT::Space::Satellite

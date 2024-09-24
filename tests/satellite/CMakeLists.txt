@@ -14,19 +14,19 @@ set(SATELLITE_TEST_SOURCES
 )
 
 # Create the integration test executable
-add_executable(lspt_satellite_tests ${SATELLITE_TEST_SOURCES})
+add_executable(srpt_satellite_tests ${SATELLITE_TEST_SOURCES})
 
 # Link libraries
-target_link_libraries(lspt_satellite_tests
+target_link_libraries(srpt_satellite_tests
     PRIVATE
     GTest::GTest
     GTest::Main
-    lspt_satellite
+    srpt_satellite
     # Add any other dependencies here
 )
 
 # Add include directories using target_include_directories
-target_include_directories(lspt_satellite_tests
+target_include_directories(srpt_satellite_tests
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/include
@@ -37,4 +37,4 @@ target_include_directories(lspt_satellite_tests
 enable_testing()
 
 # Add integration test to CTest
-add_test(NAME lspt_satellite_tests COMMAND lspt_satellite_tests)
+add_test(NAME srpt_satellite_tests COMMAND srpt_satellite_tests)

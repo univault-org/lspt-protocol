@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <chrono>
 
-namespace lspt {
+namespace srpt {
 namespace network {
 namespace local {
 
@@ -55,4 +55,4 @@ void Discovery::simulateDiscovery() {
 
 } // namespace local
 } // namespace network
-} // namespace lspt
+} // namespace srpt

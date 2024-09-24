@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "network/node/node.h"
 
-using namespace lspt::network;
+using namespace srpt::network;
 
 TEST(NodeTest, CreateNode) {
     Node node(1);

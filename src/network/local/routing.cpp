@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <algorithm>
 
-namespace lspt {
+namespace srpt {
 namespace network {
 namespace local {
 
@@ -83,4 +83,4 @@ void Routing::addLink(const Node& node1, const Node& node2) {
 
 } // namespace local
 } // namespace network
-} // namespace lspt
+} // namespace srpt

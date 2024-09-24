@@ -9,7 +9,7 @@ target_link_libraries(network_tests
     PRIVATE
     GTest::GTest
     GTest::Main
-    lspt_network
+    srpt_network
     # Add any other dependencies here
 )
 

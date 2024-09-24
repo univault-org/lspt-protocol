@@ -1,30 +1,30 @@
 #pragma once
 #include <stdexcept>
-#include "../../src/core/lspt_handshake.h"  // Include the base Handshake class
+#include "../../src/core/srpt_handshake.h"  // Include the base Handshake class
 
-namespace LSPT {
+namespace SRPT {
 namespace Common {
     using ByteVector = std::vector<uint8_t>;
 }
 }
 
-class MockHandshake : public LSPT::Handshake {
+class MockHandshake : public SRPT::Handshake {
 public:
-    MockHandshake() : state(LSPT::HandshakeState::Initial), messageCount(0) {}
+    MockHandshake() : state(SRPT::HandshakeState::Initial), messageCount(0) {}
 
-    LSPT::Common::ByteVector initiateHandshake() override {
-        if (state != LSPT::HandshakeState::Initial) {
+    SRPT::Common::ByteVector initiateHandshake() override {
+        if (state != SRPT::HandshakeState::Initial) {
             throw std::runtime_error("Handshake already initiated");
         }
-        state = LSPT::HandshakeState::InProgress;
-        return LSPT::Common::ByteVector{1}; // Non-empty response
+        state = SRPT::HandshakeState::InProgress;
+        return SRPT::Common::ByteVector{1}; // Non-empty response
     }
 
-    LSPT::Common::ByteVector handleHandshakeMessage(const LSPT::Common::ByteVector& message) override {
-        if (state == LSPT::HandshakeState::Initial) {
+    SRPT::Common::ByteVector handleHandshakeMessage(const SRPT::Common::ByteVector& message) override {
+        if (state == SRPT::HandshakeState::Initial) {
             throw std::runtime_error("Handshake not initiated");
         }
-        if (state == LSPT::HandshakeState::Established) {
+        if (state == SRPT::HandshakeState::Established) {
             throw std::runtime_error("Unexpected message in Established state");
         }
         if (message.empty() || message[0] == 0x00) {
@@ -33,34 +33,34 @@ public:
         
         messageCount++;
         if (messageCount >= 2) {
-            state = LSPT::HandshakeState::Established;
-            return LSPT::Common::ByteVector{}; // Empty response to indicate completion
+            state = SRPT::HandshakeState::Established;
+            return SRPT::Common::ByteVector{}; // Empty response to indicate completion
         }
-        return LSPT::Common::ByteVector{3}; // Non-empty response
+        return SRPT::Common::ByteVector{3}; // Non-empty response
     }
 
-    const LSPT::Common::ByteVector& getSharedSecret() const override {
-        if (state != LSPT::HandshakeState::Established) {
+    const SRPT::Common::ByteVector& getSharedSecret() const override {
+        if (state != SRPT::HandshakeState::Established) {
             throw std::runtime_error("Shared secret not available: Handshake not completed");
         }
         // Use a static member to store the mock shared secret
-        static const LSPT::Common::ByteVector mockSharedSecret{4, 5, 6};
+        static const SRPT::Common::ByteVector mockSharedSecret{4, 5, 6};
         return mockSharedSecret;
     }
 
-    LSPT::HandshakeState getState() const override {
+    SRPT::HandshakeState getState() const override {
         return state;
     }
 
     // For testing purposes
     void setInitCount(int count) { initCount = count; }
-    void setState(LSPT::HandshakeState newState) { state = newState; }
+    void setState(SRPT::HandshakeState newState) { state = newState; }
 
     // For debugging
     int getMessageCount() const { return messageCount; }
 
 private:
-    LSPT::HandshakeState state;
+    SRPT::HandshakeState state;
     int initCount;
     int messageCount;
 };

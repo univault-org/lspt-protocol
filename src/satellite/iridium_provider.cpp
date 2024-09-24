@@ -2,7 +2,7 @@
 #include <iostream>
 #include <deque>
 
-namespace LSPT::Satellite {
+namespace SRPT::Satellite {
 
 // Add this member variable to the IridiumProvider class
 
@@ -87,4 +87,4 @@ void IridiumProvider::IridiumStream::Close() {
 // Add this constructor to IridiumStream
 IridiumProvider::IridiumStream::IridiumStream(IridiumProvider& provider) : m_provider(provider) {}
 
-} // namespace LSPT::Satellite
+} // namespace SRPT::Satellite

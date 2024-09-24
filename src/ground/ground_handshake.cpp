@@ -4,10 +4,10 @@
 #include <stdexcept>
 #include <sodium.h> // Make sure this is included for crypto_box_PUBLICKEYBYTES
 
-namespace LSPT::Ground {
+namespace SRPT::Ground {
 
 GroundHandshake::GroundHandshake() {
-    localKeyPair = LSPT::generateKeyPair();
+    localKeyPair = SRPT::generateKeyPair();
 }
 
 Common::ByteVector GroundHandshake::initiateHandshake() {
@@ -53,16 +53,16 @@ Common::ByteVector GroundHandshake::handleHandshakeMessage(const Common::ByteVec
 
 Common::ByteVector GroundHandshake::addGroundIdentifier(const Common::ByteVector& message) const {
     Common::ByteVector result = message;
-    result.insert(result.begin(), LSPT::Common::SPACE_IDENTIFIER);
-    result.insert(result.begin(), LSPT::Common::GROUND_IDENTIFIER);
+    result.insert(result.begin(), SRPT::Common::SPACE_IDENTIFIER);
+    result.insert(result.begin(), SRPT::Common::GROUND_IDENTIFIER);
     return result;
 }
 
 Common::ByteVector GroundHandshake::removeIdentifier(const Common::ByteVector& message) const {
-    if (message.size() > 0 && message[0] == LSPT::Common::SPACE_IDENTIFIER) {
+    if (message.size() > 0 && message[0] == SRPT::Common::SPACE_IDENTIFIER) {
         return Common::ByteVector(message.begin() + 1, message.end());
     }
     return message;
 }
 
-} // namespace LSPT::Ground
+} // namespace SRPT::Ground

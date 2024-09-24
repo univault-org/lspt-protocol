@@ -1,6 +1,6 @@
    #include <iostream>
 
    int main() {
-       std::cout << "LSPT Protocol Demo" << std::endl;
+       std::cout << "SRPT Protocol Demo" << std::endl;
        return 0;
    }

@@ -6,10 +6,10 @@ set(GROUND_HANDSHAKE_SOURCES
 )
 
 # Create the ground handshake library
-add_library(lspt_ground_handshake ${GROUND_HANDSHAKE_SOURCES})
+add_library(srpt_ground_handshake ${GROUND_HANDSHAKE_SOURCES})
 
 # Specify include directories for the ground handshake
-target_include_directories(lspt_ground_handshake PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(srpt_ground_handshake PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Link with the common library
-target_link_libraries(lspt_ground_handshake PUBLIC lspt_common)
+target_link_libraries(srpt_ground_handshake PUBLIC srpt_common)

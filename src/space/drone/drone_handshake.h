@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../core/lspt_handshake.h"
-#include "../../crypto/lspt_crypto.h"
+#include "../../core/srpt_handshake.h"
+#include "../../crypto/srpt_crypto.h"
 
-namespace LSPT::Space::Drone {
+namespace SRPT::Space::Drone {
 
-class DroneHandshake : public LSPT::Handshake {
+class DroneHandshake : public SRPT::Handshake {
 public:
     DroneHandshake();
 
@@ -32,4 +32,4 @@ private:
     Common::ByteVector removeIdentifier(const Common::ByteVector& message) const;
 };
 
-} // namespace LSPT::Space::Drone
+} // namespace SRPT::Space::Drone

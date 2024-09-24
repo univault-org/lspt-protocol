@@ -3,7 +3,7 @@
 #include <thread>
 #include <chrono>
 
-using namespace lspt::network::local;
+using namespace srpt::network::local;
 
 class DiscoveryTest : public ::testing::Test {
 protected:

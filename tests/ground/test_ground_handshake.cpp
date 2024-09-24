@@ -4,9 +4,9 @@
 #include "../../src/space/satellite/satellite_handshake.h"  // Updated include
 
 TEST(GroundHandshakeTest, GroundInitiatedHandshake) {
-    LSPT::Ground::GroundHandshake groundHandler;
-    LSPT::Space::Drone::DroneHandshake droneHandler;  // Updated to use DroneHandshake
-    LSPT::Space::Satellite::SatelliteHandshake satelliteHandler;  // Updated to use SatelliteHandshake
+    SRPT::Ground::GroundHandshake groundHandler;
+    SRPT::Space::Drone::DroneHandshake droneHandler;  // Updated to use DroneHandshake
+    SRPT::Space::Satellite::SatelliteHandshake satelliteHandler;  // Updated to use SatelliteHandshake
 
     // Ground initiates handshake
     auto groundHello = groundHandler.initiateHandshake();

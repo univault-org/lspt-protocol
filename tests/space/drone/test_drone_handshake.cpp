@@ -3,18 +3,18 @@
 #include "../../../src/ground/ground_handshake.h"
 
 TEST(DroneHandshakeTest, DroneInitiatedHandshake) {
-    LSPT::Space::Drone::DroneHandshake droneHandler;
-    LSPT::Ground::GroundHandshake groundHandler;
+    SRPT::Space::Drone::DroneHandshake droneHandler;
+    SRPT::Ground::GroundHandshake groundHandler;
 
     // Drone initiates handshake
     auto droneHello = droneHandler.initiateHandshake();
     ASSERT_FALSE(droneHello.empty());
-    EXPECT_EQ(droneHello[0], LSPT::Common::SPACE_IDENTIFIER);
+    EXPECT_EQ(droneHello[0], SRPT::Common::SPACE_IDENTIFIER);
 
     // Ground processes Drone's hello and responds
     auto groundResponse = groundHandler.handleHandshakeMessage(droneHello);
     ASSERT_FALSE(groundResponse.empty());
-    EXPECT_EQ(groundResponse[0], LSPT::Common::GROUND_IDENTIFIER);
+    EXPECT_EQ(groundResponse[0], SRPT::Common::GROUND_IDENTIFIER);
 
     // Drone processes Ground's response
     auto droneFinished = droneHandler.handleHandshakeMessage(groundResponse);

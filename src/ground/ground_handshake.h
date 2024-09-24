@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../core/lspt_handshake.h"
-#include "../crypto/lspt_crypto.h"
+#include "../core/srpt_handshake.h"
+#include "../crypto/srpt_crypto.h"
 
-namespace LSPT::Ground {
+namespace SRPT::Ground {
 
-class GroundHandshake : public LSPT::Handshake {
+class GroundHandshake : public SRPT::Handshake {
 private:
-    LSPT::KeyPair localKeyPair;
+    SRPT::KeyPair localKeyPair;
 
 public:
     GroundHandshake();
@@ -21,4 +21,4 @@ private:
     Common::ByteVector removeIdentifier(const Common::ByteVector& message) const;
 };
 
-} // namespace LSPT::Ground
+} // namespace SRPT::Ground

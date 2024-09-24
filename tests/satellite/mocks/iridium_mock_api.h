@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-namespace LSPT {
+namespace SRPT {
 namespace Satellite {
 namespace Test {
 
@@ -46,4 +46,4 @@ std::unique_ptr<IridiumMockAPI> createIridiumMockAPI();
 
 } // namespace Test
 } // namespace Satellite
-} // namespace LSPT
+} // namespace SRPT

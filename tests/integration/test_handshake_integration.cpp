@@ -4,12 +4,12 @@
 
 class HandshakeIntegrationTest : public ::testing::Test {
 protected:
-    LSPT::Space::Drone::DroneHandshake droneHandler;
-    LSPT::Ground::GroundHandshake groundHandler;
-    LSPT::Common::ByteVector droneHello;
-    LSPT::Common::ByteVector groundResponse;
-    LSPT::Common::ByteVector droneFinished;
-    LSPT::Common::ByteVector groundFinished;
+    SRPT::Space::Drone::DroneHandshake droneHandler;
+    SRPT::Ground::GroundHandshake groundHandler;
+    SRPT::Common::ByteVector droneHello;
+    SRPT::Common::ByteVector groundResponse;
+    SRPT::Common::ByteVector droneFinished;
+    SRPT::Common::ByteVector groundFinished;
 
     void SetUp() override {
         droneHello = droneHandler.initiateHandshake();
@@ -18,23 +18,23 @@ protected:
 
 TEST_F(HandshakeIntegrationTest, DroneInitiatesHandshake) {
     ASSERT_FALSE(droneHello.empty());
-    EXPECT_EQ(droneHello[0], LSPT::Common::SPACE_IDENTIFIER);
-    EXPECT_EQ(droneHandler.getState(), LSPT::HandshakeState::HelloSent);
+    EXPECT_EQ(droneHello[0], SRPT::Common::SPACE_IDENTIFIER);
+    EXPECT_EQ(droneHandler.getState(), SRPT::HandshakeState::HelloSent);
     std::cout << "Drone state after initiation: " << static_cast<int>(droneHandler.getState()) << std::endl;
 }
 
 TEST_F(HandshakeIntegrationTest, GroundProcessesDroneHello) {
     groundResponse = groundHandler.handleHandshakeMessage(droneHello);
     ASSERT_FALSE(groundResponse.empty());
-    EXPECT_EQ(groundResponse[0], LSPT::Common::GROUND_IDENTIFIER);
-    EXPECT_EQ(groundHandler.getState(), LSPT::HandshakeState::HelloSent);
+    EXPECT_EQ(groundResponse[0], SRPT::Common::GROUND_IDENTIFIER);
+    EXPECT_EQ(groundHandler.getState(), SRPT::HandshakeState::HelloSent);
     std::cout << "Ground state after processing drone hello: " << static_cast<int>(groundHandler.getState()) << std::endl;
 }
 
 TEST_F(HandshakeIntegrationTest, DroneProcessesGroundResponse) {
     groundResponse = groundHandler.handleHandshakeMessage(droneHello);
     droneFinished = droneHandler.handleHandshakeMessage(groundResponse);
-    EXPECT_EQ(droneHandler.getState(), LSPT::HandshakeState::Established);
+    EXPECT_EQ(droneHandler.getState(), SRPT::HandshakeState::Established);
     std::cout << "Drone state after processing ground response: " << static_cast<int>(droneHandler.getState()) << std::endl;
     std::cout << "Drone finished message size: " << droneFinished.size() << std::endl;
 }
@@ -43,7 +43,7 @@ TEST_F(HandshakeIntegrationTest, GroundProcessesDroneFinished) {
     groundResponse = groundHandler.handleHandshakeMessage(droneHello);
     droneFinished = droneHandler.handleHandshakeMessage(groundResponse);
     groundFinished = groundHandler.handleHandshakeMessage(droneFinished);
-    EXPECT_EQ(groundHandler.getState(), LSPT::HandshakeState::Established);
+    EXPECT_EQ(groundHandler.getState(), SRPT::HandshakeState::Established);
     std::cout << "Ground state after processing drone final message: " << static_cast<int>(groundHandler.getState()) << std::endl;
 }
 
@@ -52,8 +52,8 @@ TEST_F(HandshakeIntegrationTest, BothSidesEstablished) {
     droneFinished = droneHandler.handleHandshakeMessage(groundResponse);
     groundFinished = groundHandler.handleHandshakeMessage(droneFinished);
 
-    EXPECT_EQ(droneHandler.getState(), LSPT::HandshakeState::Established);
-    EXPECT_EQ(groundHandler.getState(), LSPT::HandshakeState::Established);
+    EXPECT_EQ(droneHandler.getState(), SRPT::HandshakeState::Established);
+    EXPECT_EQ(groundHandler.getState(), SRPT::HandshakeState::Established);
 }
 
 TEST_F(HandshakeIntegrationTest, SharedSecretsMatch) {
@@ -61,8 +61,8 @@ TEST_F(HandshakeIntegrationTest, SharedSecretsMatch) {
     droneFinished = droneHandler.handleHandshakeMessage(groundResponse);
     groundFinished = groundHandler.handleHandshakeMessage(droneFinished);
 
-    ASSERT_EQ(droneHandler.getState(), LSPT::HandshakeState::Established);
-    ASSERT_EQ(groundHandler.getState(), LSPT::HandshakeState::Established);
+    ASSERT_EQ(droneHandler.getState(), SRPT::HandshakeState::Established);
+    ASSERT_EQ(groundHandler.getState(), SRPT::HandshakeState::Established);
 
     const auto& droneSecret = droneHandler.getSharedSecret();
     const auto& groundSecret = groundHandler.getSharedSecret();
@@ -74,7 +74,7 @@ TEST_F(HandshakeIntegrationTest, SharedSecretsMatch) {
     std::cout << "Ground shared secret size: " << groundSecret.size() << std::endl;
 
     // Print the first few bytes of each shared secret
-    auto printBytes = [](const std::string& label, const LSPT::Common::ByteVector& data, size_t count = 8) {
+    auto printBytes = [](const std::string& label, const SRPT::Common::ByteVector& data, size_t count = 8) {
         std::cout << label << ": ";
         for (size_t i = 0; i < count && i < data.size(); ++i) {
             printf("%02X ", static_cast<unsigned char>(data[i]));

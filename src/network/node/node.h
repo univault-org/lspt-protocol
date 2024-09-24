@@ -1,10 +1,10 @@
-#ifndef LSPT_NETWORK_NODE_H
-#define LSPT_NETWORK_NODE_H
+#ifndef SRPT_NETWORK_NODE_H
+#define SRPT_NETWORK_NODE_H
 
 #include <string>
 #include <vector>
 
-namespace lspt {
+namespace srpt {
 namespace network {
 
 class Node {
@@ -28,6 +28,6 @@ private:
 };
 
 } // namespace network
-} // namespace lspt
+} // namespace srpt
 
-#endif // LSPT_NETWORK_NODE_H
+#endif // SRPT_NETWORK_NODE_H

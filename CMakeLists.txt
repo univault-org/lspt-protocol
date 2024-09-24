@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(LSPTProtocol)
+project(SRPTProtocol)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -39,8 +39,8 @@ include_directories(
     ${LIBSODIUM_INCLUDE_DIRS}
 )
 
-# Create the lspt-protocol library target
-add_library(lspt-protocol STATIC)
+# Create the srpt-protocol library target
+add_library(srpt-protocol STATIC)
 
 # Add subdirectories and collect their sources
 add_subdirectory(src/core)
@@ -54,15 +54,15 @@ add_subdirectory(src/ai)
 add_subdirectory(src/satellite)
 
 # Collect all sources from subdirectories
-file(GLOB_RECURSE LSPT_SOURCES 
+file(GLOB_RECURSE SRPT_SOURCES 
     "src/*.cpp"
 )
 
-# Add sources to the lspt-protocol target
-target_sources(lspt-protocol PRIVATE ${LSPT_SOURCES})
+# Add sources to the srpt-protocol target
+target_sources(srpt-protocol PRIVATE ${SRPT_SOURCES})
 
-# Link libraries to lspt-protocol
-target_link_libraries(lspt-protocol
+# Link libraries to srpt-protocol
+target_link_libraries(srpt-protocol
     PUBLIC
     OpenSSL::SSL
     OpenSSL::Crypto
@@ -70,16 +70,16 @@ target_link_libraries(lspt-protocol
     nlohmann_json::nlohmann_json
 )
 
-# Set include directories for lspt-protocol
-target_include_directories(lspt-protocol
+# Set include directories for srpt-protocol
+target_include_directories(srpt-protocol
     PUBLIC
     ${PROJECT_SOURCE_DIR}/src
     ${LIBSODIUM_INCLUDE_DIRS}
 )
 
 # Propagate compile options and link directories
-target_compile_options(lspt-protocol PUBLIC ${LIBSODIUM_CFLAGS_OTHER})
-target_link_directories(lspt-protocol PUBLIC ${LIBSODIUM_LIBRARY_DIRS})
+target_compile_options(srpt-protocol PUBLIC ${LIBSODIUM_CFLAGS_OTHER})
+target_link_directories(srpt-protocol PUBLIC ${LIBSODIUM_LIBRARY_DIRS})
 
 # Include the tests directory
 add_subdirectory(tests)

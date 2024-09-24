@@ -3,7 +3,7 @@
 #include <vector>
 #include <cstdint>
 
-namespace LSPT::Common {
+namespace SRPT::Common {
 
 // Common type for byte vectors used throughout the project
 using ByteVector = std::vector<uint8_t>;
@@ -19,4 +19,4 @@ enum class HandshakeState {
     Established
 };
 
-} // namespace LSPT::Common
+} // namespace SRPT::Common

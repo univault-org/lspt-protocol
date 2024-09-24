@@ -3,10 +3,10 @@
 
 class IridiumAPITest : public ::testing::Test {
 protected:
-    std::unique_ptr<LSPT::Satellite::Test::IridiumMockAPI> iridiumMock;
+    std::unique_ptr<SRPT::Satellite::Test::IridiumMockAPI> iridiumMock;
 
     void SetUp() override {
-        iridiumMock = LSPT::Satellite::Test::createIridiumMockAPI();
+        iridiumMock = SRPT::Satellite::Test::createIridiumMockAPI();
     }
 };
 
@@ -17,7 +17,7 @@ TEST_F(IridiumAPITest, InitiateSession) {
 }
 
 TEST_F(IridiumAPITest, SendMOMessage) {
-    LSPT::Satellite::Test::IridiumMockAPI::MOMessage message{
+    SRPT::Satellite::Test::IridiumMockAPI::MOMessage message{
         {1, 2, 3, 4, 5},  // payload
         1,                // momsn
         "300234060109206",// imei
@@ -29,7 +29,7 @@ TEST_F(IridiumAPITest, SendMOMessage) {
 }
 
 TEST_F(IridiumAPITest, CheckMTMessages) {
-    std::vector<LSPT::Satellite::Test::IridiumMockAPI::MTMessage> messages;
+    std::vector<SRPT::Satellite::Test::IridiumMockAPI::MTMessage> messages;
     auto status = iridiumMock->checkMTMessages("300234060109206", messages);
     EXPECT_EQ(status.status, 0);
     EXPECT_EQ(status.description, "Messages retrieved successfully");

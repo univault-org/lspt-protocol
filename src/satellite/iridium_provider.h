@@ -1,8 +1,8 @@
 #pragma once
-#include "../../include/lspt_satellite.h"
+#include "../../include/srpt_satellite.h"
 #include <deque>
 
-namespace LSPT {
+namespace SRPT {
 namespace Satellite {
 
 class IridiumProvider : public ISatelliteProvider {
@@ -34,4 +34,4 @@ private:
 };
 
 } // namespace Satellite
-} // namespace LSPT
+} // namespace SRPT

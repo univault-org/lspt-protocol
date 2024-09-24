@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../../common/types.h"  // Include any necessary common types
-#include "../../core/lspt_handshake.h"  // Include the base Handshake class
+#include "../../core/srpt_handshake.h"  // Include the base Handshake class
 
-namespace LSPT::Space::Satellite {
+namespace SRPT::Space::Satellite {
 
-class SatelliteHandshake : public LSPT::Handshake {
+class SatelliteHandshake : public SRPT::Handshake {
 public:
 SatelliteHandshake();
 
@@ -29,4 +29,4 @@ Common::ByteVector addSatelliteIdentifier(const Common::ByteVector& message) con
 Common::ByteVector removeIdentifier(const Common::ByteVector& message) const;  // Declaration added
 };
 
-} // namespace LSPT::Space::Satellite
+} // namespace SRPT::Space::Satellite

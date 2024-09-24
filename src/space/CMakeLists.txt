@@ -12,11 +12,11 @@ set(SATELLITE_HANDSHAKE_SOURCES
 )
 
 # Create the drone handshake library
-add_library(lspt_drone_handshake ${DRONE_HANDSHAKE_SOURCES})
-target_include_directories(lspt_drone_handshake PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/drone)
-target_link_libraries(lspt_drone_handshake PUBLIC lspt_common)
+add_library(srpt_drone_handshake ${DRONE_HANDSHAKE_SOURCES})
+target_include_directories(srpt_drone_handshake PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/drone)
+target_link_libraries(srpt_drone_handshake PUBLIC srpt_common)
 
 # Create the satellite handshake library
-add_library(lspt_satellite_handshake ${SATELLITE_HANDSHAKE_SOURCES})
-target_include_directories(lspt_satellite_handshake PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/satellite)
-target_link_libraries(lspt_satellite_handshake PUBLIC lspt_common)
+add_library(srpt_satellite_handshake ${SATELLITE_HANDSHAKE_SOURCES})
+target_include_directories(srpt_satellite_handshake PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/satellite)
+target_link_libraries(srpt_satellite_handshake PUBLIC srpt_common)

@@ -14,13 +14,13 @@ set(INTEGRATION_TEST_SOURCES
 )
 
 # Create the integration test executable
-add_executable(lspt_integration_tests ${INTEGRATION_TEST_SOURCES})
+add_executable(srpt_integration_tests ${INTEGRATION_TEST_SOURCES})
 
 # Link libraries
-target_link_libraries(lspt_integration_tests
+target_link_libraries(srpt_integration_tests
     PRIVATE
-    lspt_core
-    lspt_common
+    srpt_core
+    srpt_common
     GTest::GTest
     GTest::Main
 )
@@ -29,4 +29,4 @@ target_link_libraries(lspt_integration_tests
 enable_testing()
 
 # Add integration test to CTest
-add_test(NAME lspt_integration_tests COMMAND lspt_integration_tests)
+add_test(NAME srpt_integration_tests COMMAND srpt_integration_tests)

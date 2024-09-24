@@ -1,62 +1,62 @@
-# LSPT: Large Single Package Transfer Protocol
+# SRPT: Satellite Relay Package Transfer Protocol
 
 
-[![CI](https://github.com/univault-org/lspt-protocol/workflows/CI/badge.svg)](https://github.com/univault-org/lspt-protocol/actions)
+[![CI](https://github.com/univault-org/srpt-protocol/workflows/CI/badge.svg)](https://github.com/univault-org/srpt-protocol/actions)
 
 
 ## 1. Abstract
 
-The Large Single Package Transfer (LSPT) protocol is a novel satellite-based communication protocol designed to efficiently transfer large data packages globally. LSPT addresses the growing need for rapid, reliable, and secure transfer of large datasets, particularly in the context of AI model updates and big data applications. By leveraging satellite technology, LSPT offers global coverage, high bandwidth, and reduced network congestion compared to traditional terrestrial networks. This document specifies the LSPT protocol, detailing its architecture, packet structure, security measures, and implementation guidelines.
+The Satellite Relay Package Transfer (SRPT) protocol is a novel satellite-based communication protocol designed to efficiently transfer large data packages globally. SRPT addresses the growing need for rapid, reliable, and secure transfer of large datasets, particularly in the context of AI model updates and big data applications. By leveraging satellite technology, SRPT offers global coverage, high bandwidth, and reduced network congestion compared to traditional terrestrial networks. This document specifies the SRPT protocol, detailing its architecture, packet structure, security measures, and implementation guidelines.
 
 ## 2. Introduction
 
-In the era of artificial intelligence and big data, the ability to quickly and reliably transfer large amounts of data across global distances has become increasingly crucial. Existing terrestrial networks often struggle with congestion, limited global reach, and inconsistent performance when handling very large data transfers. The Large Single Package Transfer (LSPT) protocol aims to address these challenges by utilizing satellite technology to provide a dedicated, high-bandwidth channel for large data transfers.
+In the era of artificial intelligence and big data, the ability to quickly and reliably transfer large amounts of data across global distances has become increasingly crucial. Existing terrestrial networks often struggle with congestion, limited global reach, and inconsistent performance when handling very large data transfers. The Satellite Relay Package Transfer (SRPT) protocol aims to address these challenges by utilizing satellite technology to provide a dedicated, high-bandwidth channel for large data transfers.
 
-LSPT is specifically designed to support use cases such as:
+SRPT is specifically designed to support use cases such as:
 - Distribution of large AI model updates
 - Transfer of extensive scientific datasets
 - Global distribution of software updates for IoT devices
 - Rapid dissemination of high-resolution imagery and sensor data
 
-The primary goals of the LSPT protocol are:
+The primary goals of the SRPT protocol are:
 1. To provide efficient, reliable transfer of large data packages (>1GB) on a global scale
 2. To reduce latency for large data transfers compared to traditional methods
 3. To offer a consistent, high-bandwidth option independent of terrestrial network conditions
 4. To ensure secure and authenticated data transfers
 5. To support the specific needs of AI and big data applications
 
-This document specifies the LSPT protocol, providing a comprehensive guide for implementers, system architects, and researchers interested in leveraging this technology for large-scale data transfer applications.
+This document specifies the SRPT protocol, providing a comprehensive guide for implementers, system architects, and researchers interested in leveraging this technology for large-scale data transfer applications.
 
 ## 3. Protocol Overview
 
-LSPT is a satellite-based communication protocol optimized for the transfer of extremely large data packages on a global scale. While it shares some conceptual similarities with protocols like QUIC, LSPT is specifically designed for satellite networks and offers unique features tailored to this environment.
+SRPT is a satellite-based communication protocol optimized for the transfer of extremely large data packages on a global scale. While it shares some conceptual similarities with protocols like QUIC, SRPT is specifically designed for satellite networks and offers unique features tailored to this environment.
 
-Key concepts in LSPT include:
+Key concepts in SRPT include:
 
 - **Package**: The entire large dataset being transferred (e.g., an AI model update), typically exceeding 1GB in size.
 - **Chunk**: A smaller, manageable piece of the package, sized for efficient satellite transmission.
 - **Session**: A logical connection between a sender and receiver for transferring a single package.
 - **Satellite Relay**: The process of transmitting data from a sender to a receiver via satellite.
 
-LSPT uses a chunk-based transfer mechanism, where large packages are divided into smaller chunks for transmission. While this approach is similar to QUIC's stream multiplexing, LSPT is optimized for the unique characteristics of satellite communication:
+SRPT uses a chunk-based transfer mechanism, where large packages are divided into smaller chunks for transmission. While this approach is similar to QUIC's stream multiplexing, SRPT is optimized for the unique characteristics of satellite communication:
 
-1. **Extreme Latency Handling**: LSPT incorporates mechanisms to deal with the much higher latencies inherent in satellite communications, which can be an order of magnitude greater than terrestrial networks.
+1. **Extreme Latency Handling**: SRPT incorporates mechanisms to deal with the much higher latencies inherent in satellite communications, which can be an order of magnitude greater than terrestrial networks.
 
-2. **Global Coverage**: Unlike QUIC, which relies on terrestrial internet infrastructure, LSPT is designed to provide truly global coverage, including remote areas without traditional internet access.
+2. **Global Coverage**: Unlike QUIC, which relies on terrestrial internet infrastructure, SRPT is designed to provide truly global coverage, including remote areas without traditional internet access.
 
-3. **Bandwidth Utilization**: LSPT includes adaptive algorithms to maximize utilization of available satellite bandwidth, which can vary significantly based on atmospheric conditions and satellite position.
+3. **Bandwidth Utilization**: SRPT includes adaptive algorithms to maximize utilization of available satellite bandwidth, which can vary significantly based on atmospheric conditions and satellite position.
 
-4. **Large-Scale Optimization**: While QUIC is general-purpose, LSPT is specifically optimized for transferring extremely large datasets, with features like intelligent chunking and reassembly tailored for gigabyte to terabyte-scale transfers.
+4. **Large-Scale Optimization**: While QUIC is general-purpose, SRPT is specifically optimized for transferring extremely large datasets, with features like intelligent chunking and reassembly tailored for gigabyte to terabyte-scale transfers.
 
-5. **Broadcast Capabilities**: LSPT leverages the natural broadcast capabilities of satellites, allowing efficient one-to-many distribution of large datasets.
+5. **Broadcast Capabilities**: SRPT leverages the natural broadcast capabilities of satellites, allowing efficient one-to-many distribution of large datasets.
 
-6. **Cross-Layer Optimization**: LSPT includes cross-layer optimizations between the transport protocol and the satellite link layer, which is not applicable in QUIC's terrestrial use cases.
+6. **Cross-Layer Optimization**: SRPT includes cross-layer optimizations between the transport protocol and the satellite link layer, which is not applicable in QUIC's terrestrial use cases.
 
 The protocol includes mechanisms for efficient ordering, error correction, and reassembly of chunks at the receiving end, tailored to the unique challenges of satellite communication. It incorporates adaptive error correction, dynamic rate control, and efficient acknowledgment mechanisms to ensure reliable and efficient data transfer in the high-latency, variable-bandwidth environment of satellite networks.
 
-## 4. The Need for LSPT
+## 4. The Need for SRPT
 
-In today's data-driven world, existing data transfer solutions face significant challenges when dealing with large-scale, global data distribution. LSPT addresses these challenges by offering a specialized satellite-based protocol. Here's how LSPT compares to current practices:
+In today's data-driven world, existing data transfer solutions face significant challenges when dealing with large-scale, global data distribution. SRPT addresses these challenges by offering a specialized satellite-based protocol. Here's how SRPT compares to current practices:
 
 ### 4.1 Limitations of Existing Solutions
 
@@ -95,7 +95,7 @@ In today's data-driven world, existing data transfer solutions face significant 
    - Requires significant server infrastructure
    - Users often face long wait times for large updates
 
-### 4.2 Benefits of LSPT
+### 4.2 Benefits of SRPT
 
 1. **Global Reach**: Provides truly global coverage, overcoming limitations of terrestrial networks.
 2. **High Bandwidth**: Offers potentially higher bandwidth than many terrestrial solutions, especially in remote areas.
@@ -108,45 +108,45 @@ In today's data-driven world, existing data transfer solutions face significant 
 9. **Consistent Performance**: Performance doesn't depend on the number of active users or seeders.
 10. **Enhanced Security**: Offers potential for improved security options compared to transfers over the public internet.
 11. **Broadcast Capability**: Leverages satellites' natural broadcast capability for efficient distribution to multiple recipients simultaneously.
-12. **Enabling Offline AI**: LSPT's satellite-based approach allows for the distribution of AI model updates and large datasets without relying on traditional internet infrastructure. This capability makes personal AI accessible in remote or underserved areas, enabling AI applications to function effectively even in locations without conventional internet access. For example:
+12. **Enabling Offline AI**: SRPT's satellite-based approach allows for the distribution of AI model updates and large datasets without relying on traditional internet infrastructure. This capability makes personal AI accessible in remote or underserved areas, enabling AI applications to function effectively even in locations without conventional internet access. For example:
     - Remote communities can benefit from advanced AI applications for education, healthcare, and local development.
     - Disaster response teams can utilize up-to-date AI models in areas where terrestrial networks are damaged or unavailable.
     - Researchers in isolated field locations can access and utilize large scientific datasets and AI models.
     - IoT devices in remote industrial or agricultural settings can receive AI model updates for improved local processing and decision-making.
 
-This unique feature of LSPT democratizes access to AI technologies, bridging the digital divide and enabling AI-driven innovation and services in previously inaccessible regions.
+This unique feature of SRPT democratizes access to AI technologies, bridging the digital divide and enabling AI-driven innovation and services in previously inaccessible regions.
 
 
 ### 4.3 Democratizing AI Through Open Communication Standards
 
 
-While several space companies have developed proprietary protocols for satellite-based data transfer, the rapid growth of personal AI and edge computing necessitates an open, standardized approach. The LSPT protocol aims to fill this gap, providing a public domain solution for efficient, large-scale data transfer via satellite networks.
+While several space companies have developed proprietary protocols for satellite-based data transfer, the rapid growth of personal AI and edge computing necessitates an open, standardized approach. The SRPT protocol aims to fill this gap, providing a public domain solution for efficient, large-scale data transfer via satellite networks.
 
 1. **Accessibility**: As AI models grow in size and complexity, efficient distribution becomes crucial. An open protocol ensures that individuals and organizations of all sizes can benefit from the latest AI advancements, not just those with access to proprietary satellite networks.
 
 2. **Innovation Catalyst**: A public domain protocol can spur innovation in AI applications, especially in remote or underserved areas where traditional internet infrastructure is limited. This democratization of technology can lead to novel solutions tailored to local needs.
 
-3. **Global AI Updates**: LSPT enables rapid, worldwide distribution of AI model updates, ensuring that edge devices and personal AI assistants can stay current with the latest improvements. This capability is crucial for maintaining the effectiveness and security of AI systems globally.
+3. **Global AI Updates**: SRPT enables rapid, worldwide distribution of AI model updates, ensuring that edge devices and personal AI assistants can stay current with the latest improvements. This capability is crucial for maintaining the effectiveness and security of AI systems globally.
 
-4. **Bridging the Digital Divide**: By providing an efficient means of large data transfer via satellite, LSPT can help bring advanced AI capabilities to regions currently underserved by terrestrial networks. This has the potential to accelerate development and improve quality of life in these areas.
+4. **Bridging the Digital Divide**: By providing an efficient means of large data transfer via satellite, SRPT can help bring advanced AI capabilities to regions currently underserved by terrestrial networks. This has the potential to accelerate development and improve quality of life in these areas.
 
 5. **Transparency and Trust**: An open protocol allows for public scrutiny and improvement, fostering trust in the infrastructure that delivers AI capabilities. This transparency is essential as AI systems become more integrated into critical aspects of our lives.
 
-6. **Interoperability**: Unlike proprietary solutions, an open protocol like LSPT can be implemented across different satellite networks and ground systems, promoting a more interconnected ecosystem. This interoperability is key to creating a truly global AI infrastructure.
+6. **Interoperability**: Unlike proprietary solutions, an open protocol like SRPT can be implemented across different satellite networks and ground systems, promoting a more interconnected ecosystem. This interoperability is key to creating a truly global AI infrastructure.
 
-7. **Research and Education**: LSPT serves as a valuable tool for academic research and education in fields ranging from telecommunications to AI, fostering a new generation of innovators. By providing an open standard, we enable students and researchers to work with cutting-edge technology.
+7. **Research and Education**: SRPT serves as a valuable tool for academic research and education in fields ranging from telecommunications to AI, fostering a new generation of innovators. By providing an open standard, we enable students and researchers to work with cutting-edge technology.
 
 8. **Disaster Resilience**: In times of crisis when terrestrial networks may be compromised, an open satellite-based protocol ensures that critical AI-driven services remain accessible. This resilience is crucial for emergency response and maintaining essential services during disasters.
 
-By developing LSPT as an open protocol, we aim to create a foundation for equitable access to AI technologies globally. This approach aligns with the broader goals of democratizing technology and ensuring that the benefits of AI advancements are widely accessible, not limited by geographical or economic barriers.
+By developing SRPT as an open protocol, we aim to create a foundation for equitable access to AI technologies globally. This approach aligns with the broader goals of democratizing technology and ensuring that the benefits of AI advancements are widely accessible, not limited by geographical or economic barriers.
 
-As we move towards a future where AI plays an increasingly central role in our daily lives, open protocols like LSPT will be crucial in ensuring that this future is inclusive, innovative, and serves the general public interest. The LSPT protocol is more than just a technical specification; it's a step towards a more equitable and connected world, where the power of AI can be harnessed for the benefit of all.
+As we move towards a future where AI plays an increasingly central role in our daily lives, open protocols like SRPT will be crucial in ensuring that this future is inclusive, innovative, and serves the general public interest. The SRPT protocol is more than just a technical specification; it's a step towards a more equitable and connected world, where the power of AI can be harnessed for the benefit of all.
 
 ## 5. Architecture
 
 ### 5.1 Protocol Layers
 
-LSPT is structured into the following layers:
+SRPT is structured into the following layers:
 
 1. **Application Layer**: Interfaces with the user application, handling package preparation and final reassembly.
 2. **Session Layer**: Manages the overall transfer session, including initiation, maintenance, and termination.
@@ -156,11 +156,11 @@ LSPT is structured into the following layers:
 
 ### 5.2 Packet Structure
 
-LSPT defines several packet types, each with a common header structure followed by a type-specific payload:
+SRPT defines several packet types, each with a common header structure followed by a type-specific payload:
 
 #### 5.2.1 Common Header Structure
 
-All LSPT packets begin with a common header:
+All SRPT packets begin with a common header:
 
 ```
  0                   1                   2                   3
@@ -204,7 +204,7 @@ All LSPT packets begin with a common header:
 
 ## 6. Security Considerations
 
-LSPT incorporates several security measures to ensure the integrity and confidentiality of data transfers:
+SRPT incorporates several security measures to ensure the integrity and confidentiality of data transfers:
 
 - End-to-end encryption
 - Authentication mechanisms
@@ -216,7 +216,7 @@ LSPT incorporates several security measures to ensure the integrity and confiden
 
 ## 7. Performance Considerations
 
-LSPT is designed to optimize performance in satellite-based communications:
+SRPT is designed to optimize performance in satellite-based communications:
 
 - Adaptive error correction based on link quality
 - Dynamic rate control to maximize bandwidth utilization
@@ -227,7 +227,7 @@ LSPT is designed to optimize performance in satellite-based communications:
 
 ## 8. Implementation Guidelines
 
-This section provides high-level guidance for implementing LSPT:
+This section provides high-level guidance for implementing SRPT:
 
 - Recommended software architecture
 - Key considerations for satellite interface integration
@@ -236,7 +236,7 @@ This section provides high-level guidance for implementing LSPT:
 
 ## 9. Use Cases and Examples
 
-Potential applications of LSPT with specific use cases:
+Potential applications of SRPT with specific use cases:
 
 - Global distribution of AI model updates
 - Rapid dissemination of large scientific datasets
@@ -254,7 +254,7 @@ Future development and research:
 
 ## 11. Contributing
 
-Guidelines for contributing to the LSPT protocol specification:
+Guidelines for contributing to the SRPT protocol specification:
 
 - How to submit issues or feature requests
 - Process for proposing changes or extensions to the protocol
@@ -268,19 +268,19 @@ Guidelines for contributing to the LSPT protocol specification:
 
 ## Use Case: Drone Swarm Coordination
 
-We've chosen drone swarm coordination as our primary use case to demonstrate the capabilities of the LSPT protocol. This scenario effectively showcases the protocol's strengths in secure, efficient, and scalable communication across various ranges and environments.
+We've chosen drone swarm coordination as our primary use case to demonstrate the capabilities of the SRPT protocol. This scenario effectively showcases the protocol's strengths in secure, efficient, and scalable communication across various ranges and environments.
 
 ### Why Drone Swarm Coordination?
 
-1. **Multi-scale Communication**: Demonstrates LSPT's ability to handle short-range (drone-to-drone), medium-range (drone-to-local control), and long-range (Earth-to-space) communication.
+1. **Multi-scale Communication**: Demonstrates SRPT's ability to handle short-range (drone-to-drone), medium-range (drone-to-local control), and long-range (Earth-to-space) communication.
 
 2. **Security in Various Environments**: Highlights the protocol's robust security features in both terrestrial and space applications.
 
-3. **Large Data Transfer**: Shows how LSPT efficiently handles the transfer of large data packages, such as swarm coordination commands or collected sensor data.
+3. **Large Data Transfer**: Shows how SRPT efficiently handles the transfer of large data packages, such as swarm coordination commands or collected sensor data.
 
 4. **Real-time Coordination**: Illustrates the protocol's capacity for low-latency communication necessary for real-time swarm operations.
 
-5. **Scalability**: Demonstrates how LSPT can manage communication in a network with numerous nodes (drones).
+5. **Scalability**: Demonstrates how SRPT can manage communication in a network with numerous nodes (drones).
 
 ### Extraterrestrial Operations
 
@@ -293,7 +293,7 @@ We've chosen drone swarm coordination as our primary use case to demonstrate the
 #### Space Construction
 
 - **Autonomous Assembly**: Drone swarms could assist in constructing space habitats or stations, requiring precise coordination and data exchange.
-- **Satellite Servicing**: Swarms of small satellites could work together to service larger satellites, demonstrating LSPT's utility in space-to-space communication.
+- **Satellite Servicing**: Swarms of small satellites could work together to service larger satellites, demonstrating SRPT's utility in space-to-space communication.
 
 ### Earth Operations: Disaster Relief Response
 
@@ -304,17 +304,17 @@ We've chosen drone swarm coordination as our primary use case to demonstrate the
 
 ### Next Steps
 
-1. Implement core LSPT protocol features
-2. Develop drone swarm simulation using LSPT
+1. Implement core SRPT protocol features
+2. Develop drone swarm simulation using SRPT
 3. Create visualizations of data flow in various scenarios
 4. Conduct performance comparisons with existing protocols
 5. Prepare detailed use case demonstrations for NASA and disaster relief organizations
 
-Through this use case, we aim to demonstrate LSPT's potential in revolutionizing communication for complex, distributed systems in both terrestrial and space applications.
+Through this use case, we aim to demonstrate SRPT's potential in revolutionizing communication for complex, distributed systems in both terrestrial and space applications.
 
 ## Examining the Drone Swarm Implementation
 
-We encourage you to explore our drone swarm implementation, which serves as a practical example of how the LSPT protocol can be utilized in a complex, distributed system. This implementation can be found in the `examples/drone_swarm` directory of this repository.
+We encourage you to explore our drone swarm implementation, which serves as a practical example of how the SRPT protocol can be utilized in a complex, distributed system. This implementation can be found in the `examples/drone_swarm` directory of this repository.
 
 ### Directory Structure
 
@@ -338,7 +338,7 @@ examples/drone_swarm/
 
 1. **Drone** (`drone.h`, `drone.cpp`):
    - Implements individual drone behavior
-   - Demonstrates short-range communication using LSPT over ultrasonic channels
+   - Demonstrates short-range communication using SRPT over ultrasonic channels
    - Shows how drones collect and transmit data
 
 2. **Local Control Station** (`local_control_station.h`, `local_control_station.cpp`):
@@ -348,14 +348,14 @@ examples/drone_swarm/
 
 3. **Satellite** (`satellite.h`, `satellite.cpp`):
    - Simulates a satellite relay
-   - Showcases long-range communication using LSPT
+   - Showcases long-range communication using SRPT
    - Demonstrates how large data packages are handled over significant distances
 
 ### How to Explore
 
-1. Start by examining the `Drone` class to understand how individual drones utilize LSPT for communication and data transfer.
+1. Start by examining the `Drone` class to understand how individual drones utilize SRPT for communication and data transfer.
 2. Move on to the `LocalControlStation` to see how multiple drones are managed and how data is aggregated.
-3. Finally, look at the `Satellite` class to understand how LSPT handles long-range, high-latency communication.
+3. Finally, look at the `Satellite` class to understand how SRPT handles long-range, high-latency communication.
 
 ### Running the Example
 
@@ -372,7 +372,7 @@ To build and run the drone swarm example:
    ./examples/drone_swarm/drone_swarm_demo
    ```
 
-This will compile and run the drone swarm demonstration, showcasing the LSPT protocol in action.
+This will compile and run the drone swarm demonstration, showcasing the SRPT protocol in action.
 
 ### Testing
 
@@ -387,4 +387,4 @@ We use Google Test for unit testing. To run the tests for the drone swarm exampl
 
 We encourage you to examine the test files in `examples/drone_swarm/tests/` to understand how we validate the functionality of each component.
 
-By exploring this implementation, you'll gain insights into how LSPT can be applied to complex, real-world scenarios involving multi-scale communication and large data transfers.
+By exploring this implementation, you'll gain insights into how SRPT can be applied to complex, real-world scenarios involving multi-scale communication and large data transfers.

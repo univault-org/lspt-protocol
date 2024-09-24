@@ -1,5 +1,5 @@
-#ifndef LSPT_NETWORK_LOCAL_DISCOVERY_H
-#define LSPT_NETWORK_LOCAL_DISCOVERY_H
+#ifndef SRPT_NETWORK_LOCAL_DISCOVERY_H
+#define SRPT_NETWORK_LOCAL_DISCOVERY_H
 
 #include <vector>
 #include <string>
@@ -8,7 +8,7 @@
 #include <atomic>
 #include <mutex>
 
-namespace lspt {
+namespace srpt {
 namespace network {
 namespace local {
 
@@ -36,6 +36,6 @@ private:
 
 } // namespace local
 } // namespace network
-} // namespace lspt
+} // namespace srpt
 
-#endif // LSPT_NETWORK_LOCAL_DISCOVERY_H
+#endif // SRPT_NETWORK_LOCAL_DISCOVERY_H

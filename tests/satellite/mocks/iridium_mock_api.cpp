@@ -1,7 +1,7 @@
 #include "iridium_mock_api.h"
 #include <stdexcept>
 
-namespace LSPT {
+namespace SRPT {
 namespace Satellite {
 namespace Test {
 
@@ -48,4 +48,4 @@ std::unique_ptr<IridiumMockAPI> createIridiumMockAPI() {
 
 } // namespace Test
 } // namespace Satellite
-} // namespace LSPT
+} // namespace SRPT

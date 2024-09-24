@@ -3,8 +3,8 @@
 #include "network/node/node.h"  
 #include <stdexcept>
 
-using namespace lspt::network;  
-using namespace lspt::network::local;
+using namespace srpt::network;  
+using namespace srpt::network::local;
 
 class RoutingTest : public ::testing::Test {
 protected:

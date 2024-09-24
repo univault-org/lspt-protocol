@@ -1,11 +1,11 @@
-#ifndef LSPT_NETWORK_HUB_H
-#define LSPT_NETWORK_HUB_H
+#ifndef SRPT_NETWORK_HUB_H
+#define SRPT_NETWORK_HUB_H
 
 #include <vector>
 #include <string>
 #include "../node/node.h"
 
-namespace lspt {
+namespace srpt {
 namespace network {
 
 class Hub {
@@ -18,6 +18,6 @@ private:
 };
 
 } // namespace network
-} // namespace lspt
+} // namespace srpt
 
-#endif // LSPT_NETWORK_HUB_H
+#endif // SRPT_NETWORK_HUB_H

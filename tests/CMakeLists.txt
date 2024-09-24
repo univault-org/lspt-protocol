@@ -9,7 +9,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)  # Include source directory for h
 
 # Set test sources
 set(TEST_SOURCES
-    core/test_lspt_handshake.cpp
+    core/test_srpt_handshake.cpp
     # space/drone/test_drone_handshake.cpp
     # ground/test_ground_handshake.cpp
     # Add other test files as needed
@@ -17,21 +17,21 @@ set(TEST_SOURCES
 
 
 # Create the test executable
-add_executable(lspt_tests ${TEST_SOURCES})
+add_executable(srpt_tests ${TEST_SOURCES})
 
 # Link libraries
-target_link_libraries(lspt_tests
+target_link_libraries(srpt_tests
     PRIVATE
-    lspt_core
-    lspt_common
-    lspt_drone_handshake  # Link the drone handshake library
-    lspt_satellite_handshake  # Link the satellite handshake library
+    srpt_core
+    srpt_common
+    srpt_drone_handshake  # Link the drone handshake library
+    srpt_satellite_handshake  # Link the satellite handshake library
     GTest::GTest
     GTest::Main
 )
 
 # Add test to CTest
-add_test(NAME lspt_tests COMMAND lspt_tests)
+add_test(NAME srpt_tests COMMAND srpt_tests)
 
 # Enable testing
 enable_testing()

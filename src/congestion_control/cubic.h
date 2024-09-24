@@ -4,7 +4,7 @@
 #include <chrono>
 #include <cstdint>
 
-namespace LSPT {
+namespace SRPT {
 namespace CongestionControl {
 
 class Cubic : public ICongestionControl {
@@ -63,4 +63,4 @@ private:
 };
 
 } // namespace CongestionControl
-} // namespace LSPT
+} // namespace SRPT
