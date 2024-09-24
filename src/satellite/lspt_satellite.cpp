@@ -115,7 +115,7 @@ SatelliteError GetLastSatelliteError() {
     return SatelliteError::NO_ERROR;
 }
 
-std::unique_ptr<ISatelliteProvider> LSPT::Satellite::CreateSatelliteProvider(Provider provider) {
+std::unique_ptr<ISatelliteProvider> CreateSatelliteProvider(Provider provider) {
     std::cout << "CreateSatelliteProvider called with provider: " 
               << (provider == Provider::STARLINK ? "STARLINK" : "IRIDIUM") << std::endl;
     switch (provider) {
@@ -132,11 +132,11 @@ std::unique_ptr<ISatelliteProvider> LSPT::Satellite::CreateSatelliteProvider(Pro
 }
 
 // Add implementations for SatelliteConfig methods
-void LSPT::Satellite::SatelliteConfig::setProvider(Provider provider) {
+void SatelliteConfig::setProvider(Provider provider) {
     provider_ = provider;
 }
 
-void LSPT::Satellite::SatelliteConfig::setProviderSpecificOption(const std::string& key, const std::string& value) {
+void SatelliteConfig::setProviderSpecificOption(const std::string& key, const std::string& value) {
     providerOptions_[key] = value;
 }
 

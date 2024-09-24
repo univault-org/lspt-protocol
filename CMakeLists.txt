@@ -88,6 +88,6 @@ add_subdirectory(tests/crypto)
 add_subdirectory(tests/congestion_control)
 add_subdirectory(tests/integration)
 add_subdirectory(tests/network)
-add_subdirectory(tests/satelite)
+add_subdirectory(tests/satellite)
 # Enable testing
 enable_testing()
