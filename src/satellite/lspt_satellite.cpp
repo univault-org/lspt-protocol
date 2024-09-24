@@ -1,17 +1,14 @@
-// lspt-protocol/src/satellite/lspt_satellite.cpp
-
 #include "../../include/lspt_satellite.h"
-#include "iridium_provider.h"  // Changed to .h
-#include "starlink_provider.h"  // Changed to .h
+#include "iridium_provider.h"  
+#include "starlink_provider.h"  
 #include "starlink_provider.cpp"
 #include "iridium_provider.cpp"
 #include <stdexcept>
-#include <iostream> // Add this at the top of the file
+#include <iostream> 
 
 namespace LSPT {
 namespace Satellite {
 
-// Implementation of SatelliteSession::Impl
 class SatelliteSession::Impl {
 public:
     Impl(const SatelliteConfig& config) : config_(config) {

@@ -1,5 +1,3 @@
-// lspt-protocol/include/lspt_satellite.h
-
 #ifndef LSPT_SATELLITE_H
 #define LSPT_SATELLITE_H
 

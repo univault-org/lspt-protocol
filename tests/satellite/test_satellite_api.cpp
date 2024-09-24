@@ -1,5 +1,3 @@
-// lspt-protocol/tests/satellite/test_satellite_api.cpp
-
 #include <gtest/gtest.h>
 #include "lspt_satellite.h"
 

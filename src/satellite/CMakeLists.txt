@@ -1,4 +1,3 @@
-# src/satellite/CMakeLists.txt
 set(SATELLITE_SOURCES
     lspt_satellite.cpp
 )

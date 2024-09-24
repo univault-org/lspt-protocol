@@ -1,6 +1,3 @@
-# CMakeLists.txt for managing integration tests
-
-# Find GTest package
 find_package(GTest REQUIRED)
 
 # Include directories for integration tests
@@ -11,6 +8,8 @@ include_directories(${PROJECT_SOURCE_DIR}/src)  # Include source directory for h
 # Set integration test sources
 set(SATELLITE_TEST_SOURCES
     test_satellite_api.cpp
+    test_iridium_mock_api.cpp
+    mocks/iridium_mock_api.cpp
     # Add other integration test files as needed
 )
 
