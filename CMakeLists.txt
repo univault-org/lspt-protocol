@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(SRPTProtocol)
+project(SRPTProtocol VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -73,7 +74,8 @@ target_link_libraries(srpt-protocol
 # Set include directories for srpt-protocol
 target_include_directories(srpt-protocol
     PUBLIC
-    ${PROJECT_SOURCE_DIR}/src
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
+    $<INSTALL_INTERFACE:include>
     ${LIBSODIUM_INCLUDE_DIRS}
 )
 
@@ -81,6 +83,60 @@ target_include_directories(srpt-protocol
 target_compile_options(srpt-protocol PUBLIC ${LIBSODIUM_CFLAGS_OTHER})
 target_link_directories(srpt-protocol PUBLIC ${LIBSODIUM_LIBRARY_DIRS})
 
+# Installation rules
+include(GNUInstallDirs)
+install(TARGETS srpt-protocol
+    EXPORT srpt-protocol-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install nlohmann_json
+install(TARGETS nlohmann_json
+    EXPORT srpt-protocol-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# Install header files
+install(DIRECTORY 
+    ${PROJECT_SOURCE_DIR}/src/
+    ${PROJECT_SOURCE_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/srpt-protocol
+    FILES_MATCHING PATTERN "*.h"
+)
+
+# Export targets
+install(EXPORT srpt-protocol-targets
+    FILE srpt-protocol-targets.cmake
+    NAMESPACE SRPT::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/srpt-protocol
+)
+
+# Create a ConfigVersion.cmake file
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/srpt-protocol-config-version.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+# Create a Config.cmake file
+configure_file(cmake/srpt-protocol-config.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/srpt-protocol-config.cmake"
+    @ONLY
+)
+
+# Install the config files
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/srpt-protocol-config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/srpt-protocol-config-version.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/srpt-protocol
+)
 # Include the tests directory
 add_subdirectory(tests)
 add_subdirectory(tests/core)

@@ -1,8 +1,38 @@
 # SRPT: Satellite Relay Package Transfer Protocol
 
-
 [![CI](https://github.com/univault-org/srpt-protocol/workflows/CI/badge.svg)](https://github.com/univault-org/srpt-protocol/actions)
 
+## Table of Contents
+- [SRPT: Satellite Relay Package Transfer Protocol](#srpt-satellite-relay-package-transfer-protocol)
+  - [Table of Contents](#table-of-contents)
+  - [1. Abstract](#1-abstract)
+  - [2. Introduction](#2-introduction)
+  - [3. Protocol Overview](#3-protocol-overview)
+  - [4. The Need for SRPT](#4-the-need-for-srpt)
+    - [4.1 Limitations of Existing Solutions](#41-limitations-of-existing-solutions)
+    - [4.2 Benefits of SRPT](#42-benefits-of-srpt)
+    - [4.3 Democratizing AI Through Open Communication Standards](#43-democratizing-ai-through-open-communication-standards)
+  - [5. Architecture](#5-architecture)
+    - [5.1 Protocol Layers](#51-protocol-layers)
+    - [5.2 Packet Structure](#52-packet-structure)
+      - [5.2.1 Common Header Structure](#521-common-header-structure)
+      - [5.2.2 Key Packet Types](#522-key-packet-types)
+  - [6. Security Considerations](#6-security-considerations)
+  - [7. Performance Considerations](#7-performance-considerations)
+  - [8. Implementation Guidelines](#8-implementation-guidelines)
+  - [9. Use Cases and Examples](#9-use-cases-and-examples)
+  - [10. Future Work](#10-future-work)
+  - [11. Contributing](#11-contributing)
+  - [12. License](#12-license)
+  - [13. Acknowledgments](#13-acknowledgments)
+  - [14. Installation](#14-installation)
+  - [15. Building and Testing with Different Satellite Providers](#15-building-and-testing-with-different-satellite-providers)
+    - [15.1 Available Satellite Providers](#151-available-satellite-providers)
+    - [15.2 Building with a Specific Provider](#152-building-with-a-specific-provider)
+    - [15.3 Testing](#153-testing)
+    - [15.4 Adding a New Satellite Provider](#154-adding-a-new-satellite-provider)
+  - [16. Documentation](#16-documentation)
+  - [Project Structure](#project-structure)
 
 ## 1. Abstract
 
@@ -266,125 +296,148 @@ Guidelines for contributing to the SRPT protocol specification:
 
 ## 13. Acknowledgments
 
-## Use Case: Drone Swarm Coordination
+## 14. Installation
 
-We've chosen drone swarm coordination as our primary use case to demonstrate the capabilities of the SRPT protocol. This scenario effectively showcases the protocol's strengths in secure, efficient, and scalable communication across various ranges and environments.
+To install the SRPT protocol library, follow these steps:
 
-### Why Drone Swarm Coordination?
-
-1. **Multi-scale Communication**: Demonstrates SRPT's ability to handle short-range (drone-to-drone), medium-range (drone-to-local control), and long-range (Earth-to-space) communication.
-
-2. **Security in Various Environments**: Highlights the protocol's robust security features in both terrestrial and space applications.
-
-3. **Large Data Transfer**: Shows how SRPT efficiently handles the transfer of large data packages, such as swarm coordination commands or collected sensor data.
-
-4. **Real-time Coordination**: Illustrates the protocol's capacity for low-latency communication necessary for real-time swarm operations.
-
-5. **Scalability**: Demonstrates how SRPT can manage communication in a network with numerous nodes (drones).
-
-### Extraterrestrial Operations
-
-#### Mars/Moon Exploration
-
-- **Terrain Mapping**: Drone swarms can quickly map large areas of Martian or lunar terrain, requiring efficient data transfer back to Earth.
-- **Search and Rescue**: In future manned missions, drone swarms could be crucial for locating lost astronauts or equipment.
-- **Resource Detection**: Swarms can conduct wide-area surveys for resources, necessitating secure and efficient data transmission.
-
-#### Space Construction
-
-- **Autonomous Assembly**: Drone swarms could assist in constructing space habitats or stations, requiring precise coordination and data exchange.
-- **Satellite Servicing**: Swarms of small satellites could work together to service larger satellites, demonstrating SRPT's utility in space-to-space communication.
-
-### Earth Operations: Disaster Relief Response
-
-- **Rapid Situation Assessment**: Drone swarms can quickly survey disaster-stricken areas, sending back large volumes of imagery and sensor data.
-- **Search and Rescue**: Coordinated drone swarms can efficiently search for survivors in disaster zones.
-- **Communication Relay**: In areas where infrastructure is damaged, drone swarms can establish temporary communication networks.
-- **Supply Delivery**: Swarms can coordinate to deliver supplies to multiple locations simultaneously, requiring secure and efficient communication.
-
-### Next Steps
-
-1. Implement core SRPT protocol features
-2. Develop drone swarm simulation using SRPT
-3. Create visualizations of data flow in various scenarios
-4. Conduct performance comparisons with existing protocols
-5. Prepare detailed use case demonstrations for NASA and disaster relief organizations
-
-Through this use case, we aim to demonstrate SRPT's potential in revolutionizing communication for complex, distributed systems in both terrestrial and space applications.
-
-## Examining the Drone Swarm Implementation
-
-We encourage you to explore our drone swarm implementation, which serves as a practical example of how the SRPT protocol can be utilized in a complex, distributed system. This implementation can be found in the `examples/drone_swarm` directory of this repository.
-
-### Directory Structure
-
-```
-examples/drone_swarm/
-├── src/
-│   ├── drone.h
-│   ├── drone.cpp
-│   ├── local_control_station.h
-│   ├── local_control_station.cpp
-│   ├── satellite.h
-│   └── satellite.cpp
-├── tests/
-│   ├── test_drone.cpp
-│   ├── test_local_control_station.cpp
-│   └── test_satellite.cpp
-└── CMakeLists.txt
-```
-
-### Key Components
-
-1. **Drone** (`drone.h`, `drone.cpp`):
-   - Implements individual drone behavior
-   - Demonstrates short-range communication using SRPT over ultrasonic channels
-   - Shows how drones collect and transmit data
-
-2. **Local Control Station** (`local_control_station.h`, `local_control_station.cpp`):
-   - Manages a group of drones
-   - Illustrates medium-range communication between drones and the control station
-   - Demonstrates data aggregation and command distribution
-
-3. **Satellite** (`satellite.h`, `satellite.cpp`):
-   - Simulates a satellite relay
-   - Showcases long-range communication using SRPT
-   - Demonstrates how large data packages are handled over significant distances
-
-### How to Explore
-
-1. Start by examining the `Drone` class to understand how individual drones utilize SRPT for communication and data transfer.
-2. Move on to the `LocalControlStation` to see how multiple drones are managed and how data is aggregated.
-3. Finally, look at the `Satellite` class to understand how SRPT handles long-range, high-latency communication.
-
-### Running the Example
-
-To build and run the drone swarm example:
-
-1. Ensure you have CMake and a C++ compiler installed.
-2. Navigate to the project root directory.
-3. Run the following commands:
-
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/univault-org/srpt-protocol.git
+   cd srpt-protocol
    ```
+
+2. Create a build directory:
+   ```bash
    mkdir build && cd build
+   ```
+
+3. Configure the project with CMake:
+   ```bash
    cmake ..
+   ```
+
+4. Build the project:
+   ```bash
    make
-   ./examples/drone_swarm/drone_swarm_demo
    ```
 
-This will compile and run the drone swarm demonstration, showcasing the SRPT protocol in action.
-
-### Testing
-
-We use Google Test for unit testing. To run the tests for the drone swarm example:
-
-1. Follow the build steps above.
-2. Run the test executable:
-
-   ```
-   ./examples/drone_swarm/tests/drone_swarm_tests
+5. (Optional) Install the library system-wide:
+   ```bash
+   sudo make install
    ```
 
-We encourage you to examine the test files in `examples/drone_swarm/tests/` to understand how we validate the functionality of each component.
+## 15. Building and Testing with Different Satellite Providers
 
-By exploring this implementation, you'll gain insights into how SRPT can be applied to complex, real-world scenarios involving multi-scale communication and large data transfers.
+The SRPT protocol is designed to work with various satellite providers. Our current implementation includes support for Iridium and Starlink, with the flexibility to add more providers in the future.
+
+### 15.1 Available Satellite Providers
+
+- Iridium
+- Starlink
+
+### 15.2 Building with a Specific Provider
+
+To build the SRPT library with a specific satellite provider, use the following CMake option:
+
+```bash
+cmake -DSATELLITE_PROVIDER=<PROVIDER_NAME> ..
+```
+
+Replace `<PROVIDER_NAME>` with one of the available providers (IRIDIUM or STARLINK).
+
+For example, to build with Iridium support:
+
+```bash
+cmake -DSATELLITE_PROVIDER=IRIDIUM ..
+```
+
+### 15.3 Testing
+
+Our test suite includes tests for each supported satellite provider. To run the tests:
+
+1. Build the project as described in the Installation section.
+2. Run the tests:
+   ```bash
+   make test
+   ```
+
+To run tests for a specific provider:
+
+```bash
+ctest -R <PROVIDER_NAME>
+```
+
+For example, to run Starlink-specific tests:
+
+```bash
+ctest -R STARLINK
+```
+
+### 15.4 Adding a New Satellite Provider
+
+To add support for a new satellite provider:
+
+1. Create new files in `src/satellite/` for your provider (e.g., `new_provider.h` and `new_provider.cpp`).
+2. Implement the `ISatelliteProvider` interface for your new provider.
+3. Update `include/srpt_satellite.h` to include the new provider in the `Provider` enum.
+4. Modify the `CreateSatelliteProvider` function in `src/satellite/satellite_provider_factory.cpp` to support your new provider.
+5. Add tests for your new provider in the `tests/` directory.
+6. Update the CMakeLists.txt files as necessary to include your new provider in the build process.
+
+For detailed instructions on implementing a new provider, please refer to our [Contributing Guidelines](CONTRIBUTING.md).
+
+## 16. Documentation
+
+For detailed API documentation, please refer to the `docs/` directory in this repository. You can generate the documentation using Doxygen:
+
+```bash
+doxygen Doxyfile
+```
+
+The generated documentation will be available in the `docs/html/` directory.
+
+## Project Structure
+
+```
+srpt-protocol/
+├── include/
+│   └── srpt-protocol/
+│       ├── srpt_satellite.h
+│       └── ...
+├── src/
+│   ├── satellite/
+│   │   ├── iridium_provider.h
+│   │   ├── iridium_provider.cpp
+│   │   ├── starlink_provider.h
+│   │   ├── starlink_provider.cpp
+│   │   └── satellite_provider_factory.cpp
+│   └── ...
+├── tests/
+│   ├── mocks/
+│   │   ├── mock_satellite_provider.h
+│   │   └── mock_satellite_provider.cpp
+│   ├── test_iridium_provider.cpp
+│   ├── test_starlink_provider.cpp
+│   └── ...
+├── examples/
+│   └── drone_swarm/
+│       ├── src/
+│       │   ├── drone.h
+│       │   ├── drone.cpp
+│       │   ├── local_control_station.h
+│       │   ├── local_control_station.cpp
+│       │   ├── satellite.h
+│       │   └── satellite.cpp
+│       ├── tests/
+│       │   ├── test_drone.cpp
+│       │   ├── test_local_control_station.cpp
+│       │   └── test_satellite.cpp
+│       └── CMakeLists.txt
+├── docs/
+│   └── ...
+├── CMakeLists.txt
+├── README.md
+├── CONTRIBUTING.md
+└── LICENSE
+```
+
