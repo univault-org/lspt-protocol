@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find required packages
-find_package(OpenSSL REQUIRED)
 find_package(GTest REQUIRED)
 find_package(PkgConfig REQUIRED)
 
@@ -65,8 +64,6 @@ target_sources(srpt-protocol PRIVATE ${SRPT_SOURCES})
 # Link libraries to srpt-protocol
 target_link_libraries(srpt-protocol
     PUBLIC
-    OpenSSL::SSL
-    OpenSSL::Crypto
     ${LIBSODIUM_LIBRARY}
     nlohmann_json::nlohmann_json
 )
