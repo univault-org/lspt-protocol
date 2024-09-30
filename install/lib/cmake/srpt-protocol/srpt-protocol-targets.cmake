@@ -61,7 +61,7 @@ add_library(SRPT::srpt-protocol STATIC IMPORTED)
 set_target_properties(SRPT::srpt-protocol PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include;/usr/local/Cellar/libsodium/1.0.20/include;${_IMPORT_PREFIX}/include"
   INTERFACE_LINK_DIRECTORIES "/usr/local/Cellar/libsodium/1.0.20/lib"
-  INTERFACE_LINK_LIBRARIES "OpenSSL::SSL;OpenSSL::Crypto;/usr/local/Cellar/libsodium/1.0.20/lib/libsodium.dylib;SRPT::nlohmann_json"
+  INTERFACE_LINK_LIBRARIES "/usr/local/Cellar/libsodium/1.0.20/lib/libsodium.dylib;SRPT::nlohmann_json"
 )
 
 # Create imported target SRPT::nlohmann_json
