@@ -17,10 +17,11 @@ public:
     double GetLatency() const override;
     uint64_t GetBandwidth() const override;
     std::unique_ptr<SatelliteStream> CreateStream() override;
+    void setVerboseLogging(bool verbose) override {m_verboseLogging = verbose;};
 
 private:
     std::deque<ByteVector> m_dataQueue;
-
+    bool m_verboseLogging = false;
     class StarlinkStream : public SatelliteStream {
     public:
         explicit StarlinkStream(StarlinkProvider& provider);

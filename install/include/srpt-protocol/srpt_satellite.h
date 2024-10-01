@@ -50,7 +50,8 @@ public:
     virtual double GetSignalStrength() const = 0;
     virtual double GetLatency() const = 0;
     virtual uint64_t GetBandwidth() const = 0;
-    virtual std::unique_ptr<SatelliteStream> CreateStream() = 0;  // Add this line
+    virtual std::unique_ptr<SatelliteStream> CreateStream() = 0;  
+    virtual void setVerboseLogging(bool verbose) = 0;
 };
 
 class SatelliteSession {
@@ -69,7 +70,7 @@ public:
     double GetSignalStrength() const;
     double GetLatency() const;
     uint64_t GetBandwidth() const;
-
+    void setVerboseLogging(bool verbose);
 private:
     class Impl;
     std::unique_ptr<Impl> pImpl;

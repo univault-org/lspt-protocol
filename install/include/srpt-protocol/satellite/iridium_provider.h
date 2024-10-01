@@ -17,17 +17,17 @@ public:
     double GetLatency() const override;
     uint64_t GetBandwidth() const override;
     std::unique_ptr<SatelliteStream> CreateStream() override;
-
+    void setVerboseLogging(bool verbose) override {m_verboseLogging = verbose;};
 private:
     std::deque<ByteVector> m_dataQueue;
-
+    bool m_verboseLogging = false;
     class IridiumStream : public SatelliteStream {
     public:
         explicit IridiumStream(IridiumProvider& provider);
         bool Write(const ByteVector& data) override;
         bool Read(ByteVector& data) override;
         void Close() override;
-
+  
     private:
         IridiumProvider& m_provider;
     };

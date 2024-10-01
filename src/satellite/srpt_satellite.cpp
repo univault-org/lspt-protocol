@@ -29,6 +29,7 @@ public:
     double GetSignalStrength() const;
     double GetLatency() const;
     uint64_t GetBandwidth() const;
+    void setVerboseLogging(bool verbose);  // Add this line
 
 private:
     std::unique_ptr<ISatelliteProvider> provider_;
@@ -71,6 +72,10 @@ uint64_t SatelliteSession::GetBandwidth() const {
     return pImpl->GetBandwidth();
 }
 
+void SatelliteSession::setVerboseLogging(bool verbose) {
+    pImpl->setVerboseLogging(verbose);
+}
+
 // Implementation of SatelliteSession::Impl methods
 bool SatelliteSession::Impl::Connect(const std::string& satellite_id) {
     return provider_->Connect(satellite_id);
@@ -100,6 +105,12 @@ double SatelliteSession::Impl::GetLatency() const {
 
 uint64_t SatelliteSession::Impl::GetBandwidth() const {
     return provider_->GetBandwidth();
+}
+
+void SatelliteSession::Impl::setVerboseLogging(bool verbose) {
+    if (provider_) {
+        provider_->setVerboseLogging(verbose);
+    }
 }
 
 // Other function implementations

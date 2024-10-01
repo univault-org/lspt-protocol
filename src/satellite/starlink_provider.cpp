@@ -26,11 +26,13 @@ bool StarlinkProvider::Disconnect() {
 
 bool StarlinkProvider::SendData(const ByteVector& data) {
     m_dataQueue.push_back(data);
-    std::cout << "StarlinkProvider::SendData - Data sent: ";
-    for (const auto& byte : data) {
-        std::cout << static_cast<int>(byte) << " ";
+    if(m_verboseLogging) {
+        std::cout << "StarlinkProvider::SendData - Data sent: ";
+        for (const auto& byte : data) {
+            std::cout << static_cast<int>(byte) << " ";
+        }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
     return true;
 }
 
