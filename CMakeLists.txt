@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.10)
-project(SRPTProtocol)
 project(SRPTProtocol VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -32,13 +31,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(json)
 
+
 # Include directories
 include_directories(
     ${GTEST_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/src
     ${LIBSODIUM_INCLUDE_DIRS}
 )
-
 # Create the srpt-protocol library target
 add_library(srpt-protocol STATIC)
 
@@ -71,9 +70,11 @@ target_link_libraries(srpt-protocol
 # Set include directories for srpt-protocol
 target_include_directories(srpt-protocol
     PUBLIC
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<INSTALL_INTERFACE:include>
     ${LIBSODIUM_INCLUDE_DIRS}
+    ${GTEST_INCLUDE_DIRS}
 )
 
 # Propagate compile options and link directories
@@ -101,8 +102,13 @@ install(TARGETS nlohmann_json
 
 # Install header files
 install(DIRECTORY 
-    ${PROJECT_SOURCE_DIR}/src/
     ${PROJECT_SOURCE_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.h"
+)
+
+install(DIRECTORY 
+    ${PROJECT_SOURCE_DIR}/src/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/srpt-protocol
     FILES_MATCHING PATTERN "*.h"
 )
@@ -134,6 +140,7 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/srpt-protocol-config-version.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/srpt-protocol
 )
+
 # Include the tests directory
 add_subdirectory(tests)
 add_subdirectory(tests/core)
@@ -142,5 +149,6 @@ add_subdirectory(tests/congestion_control)
 add_subdirectory(tests/integration)
 add_subdirectory(tests/network)
 add_subdirectory(tests/satellite)
+
 # Enable testing
 enable_testing()

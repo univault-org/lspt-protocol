@@ -1,13 +1,29 @@
 #include "../../include/srpt_satellite.h"
-#include "iridium_provider.h"  
-#include "starlink_provider.h"  
-#include "starlink_provider.cpp"
-#include "iridium_provider.cpp"
+#include "../../include/satellite/starlink_provider.h"
+#include "../../include/satellite/iridium_provider.h"
 #include <stdexcept>
-#include <iostream> 
+#include <iostream>
+#include <unordered_map>
 
 namespace SRPT {
 namespace Satellite {
+
+static std::unordered_map<Provider, std::function<std::unique_ptr<ISatelliteProvider>()>>& GetProviderFactories() {
+    static std::unordered_map<Provider, std::function<std::unique_ptr<ISatelliteProvider>()>> g_providerFactories;
+    return g_providerFactories;
+}
+
+bool RegisterSatelliteProvider(Provider provider, std::function<std::unique_ptr<ISatelliteProvider>()> factory) {
+    std::cout << "Registering provider: " << static_cast<int>(provider) << std::endl;
+    try {
+        auto result = GetProviderFactories().insert({provider, std::move(factory)});
+        std::cout << "Registration " << (result.second ? "successful" : "failed (already exists)") << std::endl;
+        return result.second;
+    } catch (const std::exception& e) {
+        std::cerr << "Exception during provider registration: " << e.what() << std::endl;
+        return false;
+    }
+}
 
 class SatelliteSession::Impl {
 public:
@@ -125,7 +141,16 @@ SatelliteError GetLastSatelliteError() {
 
 std::unique_ptr<ISatelliteProvider> CreateSatelliteProvider(Provider provider) {
     std::cout << "CreateSatelliteProvider called with provider: " 
-              << (provider == Provider::STARLINK ? "STARLINK" : "IRIDIUM") << std::endl;
+              << static_cast<int>(provider) << std::endl;
+    
+    auto& factories = GetProviderFactories();
+    auto it = factories.find(provider);
+    if (it != factories.end()) {
+        std::cout << "Provider found in factory map" << std::endl;
+        return it->second();
+    }
+    
+    std::cout << "Provider not found in factory map, using switch statement" << std::endl;
     switch (provider) {
         case Provider::STARLINK:
             std::cout << "Creating StarlinkProvider" << std::endl;
@@ -152,3 +177,15 @@ void SatelliteConfig::setProviderSpecificOption(const std::string& key, const st
 
 } // namespace Satellite
 } // namespace SRPT
+
+namespace {
+    __attribute__((used)) static bool starlinkRegistered = SRPT::Satellite::RegisterSatelliteProvider(
+        SRPT::Satellite::Provider::STARLINK,
+        []() { return std::make_unique<SRPT::Satellite::StarlinkProvider>(); }
+    );
+
+    __attribute__((used)) static bool iridiumRegistered = SRPT::Satellite::RegisterSatelliteProvider(
+        SRPT::Satellite::Provider::IRIDIUM,
+        []() { return std::make_unique<SRPT::Satellite::IridiumProvider>(); }
+    );
+}

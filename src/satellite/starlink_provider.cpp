@@ -1,4 +1,5 @@
-#include "starlink_provider.h"
+#include "../../include/satellite/starlink_provider.h"
+#include "../../include/srpt_satellite.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -26,13 +27,13 @@ bool StarlinkProvider::Disconnect() {
 
 bool StarlinkProvider::SendData(const ByteVector& data) {
     m_dataQueue.push_back(data);
-    if(m_verboseLogging) {
-        std::cout << "StarlinkProvider::SendData - Data sent: ";
-        for (const auto& byte : data) {
-            std::cout << static_cast<int>(byte) << " ";
-        }
-        std::cout << std::endl;
-    }
+    // if(m_verboseLogging) {
+    //     std::cout << "StarlinkProvider::SendData - Data sent: ";
+    //     for (const auto& byte : data) {
+    //         std::cout << static_cast<int>(byte) << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
     return true;
 }
 
@@ -89,6 +90,16 @@ StarlinkProvider::StarlinkStream::StarlinkStream(StarlinkProvider& provider) : m
 
 void StarlinkProvider::StarlinkStream::Close() {
     // Implement Starlink-specific close logic
+}
+
+// Factory function implementation
+std::unique_ptr<ISatelliteProvider> CreateStarlinkProvider() {
+    return std::make_unique<StarlinkProvider>();
+}
+
+// Register the Starlink provider
+namespace {
+    __attribute__((used)) static bool registered = RegisterSatelliteProvider(Provider::STARLINK, CreateStarlinkProvider);
 }
 
 } // namespace Satellite

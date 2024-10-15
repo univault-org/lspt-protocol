@@ -1,8 +1,14 @@
-#include "iridium_provider.h"
+#include "../../include/satellite/iridium_provider.h"
+#include "../../include/srpt_satellite.h"
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdint>
+#include <stdexcept>
 #include <deque>
 
-namespace SRPT::Satellite {
+namespace SRPT {
+namespace Satellite {
 
 // Add this member variable to the IridiumProvider class
 
@@ -83,10 +89,21 @@ bool IridiumProvider::IridiumStream::Read(ByteVector& data) {
 }
 
 void IridiumProvider::IridiumStream::Close() {
-    // Implement stream close logic
+    // Implement Iridium-specific close logic
 }
 
 // Add this constructor to IridiumStream
 IridiumProvider::IridiumStream::IridiumStream(IridiumProvider& provider) : m_provider(provider) {}
 
-} // namespace SRPT::Satellite
+// Factory function implementation
+std::unique_ptr<ISatelliteProvider> CreateIridiumProvider() {
+    return std::make_unique<IridiumProvider>();
+}
+
+// Register the Iridium provider
+namespace {
+    __attribute__((used)) static bool registered = RegisterSatelliteProvider(Provider::IRIDIUM, CreateIridiumProvider);
+}
+
+} // namespace Satellite
+} // namespace SRPT

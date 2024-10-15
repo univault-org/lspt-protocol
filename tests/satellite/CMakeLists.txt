@@ -4,6 +4,7 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)  # Include the main include directory
 include_directories(${PROJECT_SOURCE_DIR}/src)  # Include source directory for headers
+include_directories(${PROJECT_SOURCE_DIR}/include/satellite)  # Include the satellite-specific headers
 
 # Set integration test sources
 set(SATELLITE_TEST_SOURCES
@@ -21,7 +22,7 @@ target_link_libraries(srpt_satellite_tests
     PRIVATE
     GTest::GTest
     GTest::Main
-    srpt_satellite
+    srpt-protocol  # Changed from srpt_satellite to srpt-protocol
     # Add any other dependencies here
 )
 
@@ -30,6 +31,7 @@ target_include_directories(srpt_satellite_tests
     PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/include/satellite
     ${GTEST_INCLUDE_DIRS}
 )
 
